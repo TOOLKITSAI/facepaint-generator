@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Generate creative face paint ideas using AI. Perfect for artists, event planners, and face painting enthusiasts.">
+    <meta name="keywords" content="face paint ideas, face painting designs, AI face paint generator">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="assets/icons/palette.svg">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Comforter+Brush&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/main.css">
+    
+    <title>Face Paint Ideas - AI Face Painting Design Generator</title>
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <nav class="nav container">
+            <a href="/" class="nav__logo">
+                <img src="assets/icons/palette.svg" alt="Face Paint Ideas Logo" class="nav__logo-icon">
+                <span class="nav__logo-text">Face Paint Ideas</span>
+            </a>
+            <ul class="nav__menu">
+                <li><a href="#generator" class="nav__link">Generator</a></li>
+                <li><a href="#gallery" class="nav__link">Gallery</a></li>
+                <li><a href="#inspiration" class="nav__link">Inspiration</a></li>
+                <li><a href="#features" class="nav__link">Features</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero__container container">
+                <div class="hero__content">
+                    <h1 class="hero__title">Transform Any Face Into a Canvas of Imagination</h1>
+                    <p class="hero__subtitle">Discover endless face painting inspiration for every occasion, skill level, and age. From simple 10-minute designs to professional masterpieces, unlock your creative potential today.</p>
+                    <div class="hero__cta">
+                        <a href="#generator" class="btn btn--primary">Start Creating</a>
+                        <a href="#gallery" class="btn btn--secondary">View Gallery</a>
+                    </div>
+                </div>
+                <div class="hero__visual">
+                    <div class="hero__image-wrapper">
+                        <!-- Temporarily commented out the missing image -->
+                        <!-- <img src="assets/images/hero-face-paint.jpg" alt="Creative face paint design" class="hero__image"> -->
+                        
+                        <!-- Added placeholder -->
+                        <div class="hero__placeholder">
+                            <div class="hero__placeholder-icon">🎭</div>
+                            <p class="hero__placeholder-text">Creative face paint designs to inspire your next masterpiece</p>
+                        </div>
+                        
+                        <div class="hero__gradient"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="hero__shapes">
+                <div class="shape shape--1"></div>
+                <div class="shape shape--2"></div>
+                <div class="shape shape--3"></div>
+            </div>
+        </section>
+
+        <!-- Generator Section -->
+        <section id="generator" class="generator">
+            <div class="generator__container container">
+                <div class="generator__header">
+                    <h2 class="generator__title">Create Your Face Paint Design</h2>
+                    <p class="generator__subtitle">Describe your vision, choose your style, and let AI transform your ideas into stunning face paint designs.</p>
+                </div>
+                
+                <div class="generator__content">
+                    <div class="generator__input">
+                        <div class="input-group">
+                            <label for="prompt" class="input-group__label">Describe Your Design</label>
+                            <textarea id="prompt" class="input-group__textarea" placeholder="Example: A butterfly design with purple and pink colors, perfect for a child's face"></textarea>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label class="input-group__label">Category</label>
+                            <select class="input-group__select" id="category">
+                                <option value="">Select a category</option>
+                                <option value="children">Children's Party</option>
+                                <option value="festival">Festival & Carnival</option>
+                                <option value="stage">Stage Performance</option>
+                                <option value="sports">Sports Events</option>
+                                <option value="halloween">Halloween Special</option>
+                            </select>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label class="input-group__label">Style</label>
+                            <select class="input-group__select" id="style">
+                                <option value="">Select a style</option>
+                                <option value="animal">Animal Designs</option>
+                                <option value="superhero">Superhero Looks</option>
+                                <option value="fantasy">Fantasy Characters</option>
+                                <option value="abstract">Abstract Art</option>
+                                <option value="floral">Floral & Nature</option>
+                                <option value="tribal">Tribal & Ethnic</option>
+                                <option value="glitter">Glitter & Sparkle</option>
+                            </select>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label class="input-group__label">Complexity</label>
+                            <select class="input-group__select" id="complexity">
+                                <option value="beginner">Beginner Friendly</option>
+                                <option value="intermediate">Intermediate</option>
+                                <option value="advanced">Advanced</option>
+                                <option value="professional">Professional</option>
+                            </select>
+                        </div>
+                        
+                        <button class="btn btn--primary btn--generate">
+                            <span class="btn__icon">🎨</span>
+                            Generate Design
+                        </button>
+                    </div>
+                    
+                    <div class="generator__preview">
+                        <div class="preview-container">
+                            <div class="preview-placeholder">
+                                <div class="preview-placeholder__icon">🎨</div>
+                                <p class="preview-placeholder__text">Your face paint design will appear here</p>
+                            </div>
+                            <div class="preview-result hidden">
+                                <img src="" alt="Generated face paint design" class="preview-result__image">
+                                <div class="preview-result__actions">
+                                    <button class="btn btn--secondary btn--small">
+                                        <span class="btn__icon">🔄</span>
+                                        Regenerate
+                                    </button>
+                                    <button class="btn btn--secondary btn--small">
+                                        <span class="btn__icon">💾</span>
+                                        Save
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="preview-loading hidden">
+                                <div class="loading-spinner"></div>
+                                <p class="loading-text">Creating your design...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gallery Section -->
+        <section id="gallery" class="gallery">
+            <div class="gallery__container container">
+                <div class="gallery__header">
+                    <h2 class="gallery__title">Explore Creative Face Paint Designs</h2>
+                    <p class="gallery__subtitle">Browse our curated collection of stunning face paint designs for inspiration.</p>
+                </div>
+                
+                <div class="gallery__filter">
+                    <button class="filter__btn active" data-filter="all">All Designs</button>
+                    <button class="filter__btn" data-filter="children">Children</button>
+                    <button class="filter__btn" data-filter="festival">Festival</button>
+                    <button class="filter__btn" data-filter="halloween">Halloween</button>
+                    <button class="filter__btn" data-filter="professional">Professional</button>
+                </div>
+                
+                <div class="gallery__grid">
+                    <!-- Gallery Item 1 -->
+                    <div class="gallery__item" data-category="children">
+                        <div class="gallery__image-wrapper">
+                            <div class="gallery__placeholder">
+                                <div class="gallery__placeholder-icon">🦋</div>
+                            </div>
+                            <!-- <img src="assets/images/gallery/butterfly.jpg" alt="Butterfly face paint design" class="gallery__image"> -->
+                        </div>
+                        <div class="gallery__content">
+                            <h3 class="gallery__item-title">Butterfly Fantasy</h3>
+                            <p class="gallery__item-category">Children's Party</p>
+                            <div class="gallery__item-tags">
+                                <span class="tag">Beginner</span>
+                                <span class="tag">15 min</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Gallery Item 2 -->
+                    <div class="gallery__item" data-category="festival">
+                        <div class="gallery__image-wrapper">
+                            <div class="gallery__placeholder">
+                                <div class="gallery__placeholder-icon">✨</div>
+                            </div>
+                            <!-- <img src="assets/images/gallery/festival.jpg" alt="Festival glitter face paint" class="gallery__image"> -->
+                        </div>
+                        <div class="gallery__content">
+                            <h3 class="gallery__item-title">Festival Glitter</h3>
+                            <p class="gallery__item-category">Festival & Carnival</p>
+                            <div class="gallery__item-tags">
+                                <span class="tag">Intermediate</span>
+                                <span class="tag">20 min</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Gallery Item 3 -->
+                    <div class="gallery__item" data-category="halloween">
+                        <div class="gallery__image-wrapper">
+                            <div class="gallery__placeholder">
+                                <div class="gallery__placeholder-icon">💀</div>
+                            </div>
+                            <!-- <img src="assets/images/gallery/skull.jpg" alt="Sugar skull face paint design" class="gallery__image"> -->
+                        </div>
+                        <div class="gallery__content">
+                            <h3 class="gallery__item-title">Sugar Skull</h3>
+                            <p class="gallery__item-category">Halloween Special</p>
+                            <div class="gallery__item-tags">
+                                <span class="tag">Advanced</span>
+                                <span class="tag">45 min</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Gallery Item 4 -->
+                    <div class="gallery__item" data-category="professional">
+                        <div class="gallery__image-wrapper">
+                            <div class="gallery__placeholder">
+                                <div class="gallery__placeholder-icon">🎭</div>
+                            </div>
+                            <!-- <img src="assets/images/gallery/theater.jpg" alt="Theatrical face paint design" class="gallery__image"> -->
+                        </div>
+                        <div class="gallery__content">
+                            <h3 class="gallery__item-title">Dramatic Persona</h3>
+                            <p class="gallery__item-category">Stage Performance</p>
+                            <div class="gallery__item-tags">
+                                <span class="tag">Professional</span>
+                                <span class="tag">60 min</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Gallery Item 5 -->
+                    <div class="gallery__item" data-category="children">
+                        <div class="gallery__image-wrapper">
+                            <div class="gallery__placeholder">
+                                <div class="gallery__placeholder-icon">🦁</div>
+                            </div>
+                            <!-- <img src="assets/images/gallery/lion.jpg" alt="Lion face paint design" class="gallery__image"> -->
+                        </div>
+                        <div class="gallery__content">
+                            <h3 class="gallery__item-title">Brave Lion</h3>
+                            <p class="gallery__item-category">Children's Party</p>
+                            <div class="gallery__item-tags">
+                                <span class="tag">Intermediate</span>
+                                <span class="tag">25 min</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Gallery Item 6 -->
+                    <div class="gallery__item" data-category="festival">
+                        <div class="gallery__image-wrapper">
+                            <div class="gallery__placeholder">
+                                <div class="gallery__placeholder-icon">🌈</div>
+                            </div>
+                            <!-- <img src="assets/images/gallery/rainbow.jpg" alt="Rainbow face paint design" class="gallery__image"> -->
+                        </div>
+                        <div class="gallery__content">
+                            <h3 class="gallery__item-title">Rainbow Dreams</h3>
+                            <p class="gallery__item-category">Festival & Carnival</p>
+                            <div class="gallery__item-tags">
+                                <span class="tag">Beginner</span>
+                                <span class="tag">15 min</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="gallery__actions">
+                    <button class="btn btn--secondary btn--load-more">
+                        <span class="btn__icon">+</span>
+                        Load More Designs
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Inspiration Section -->
+        <section id="inspiration" class="inspiration">
+            <div class="inspiration__container container">
+                <div class="inspiration__header">
+                    <h2 class="inspiration__title">Where to Find Face Paint Inspiration</h2>
+                    <p class="inspiration__subtitle">Discover creative sources and techniques to spark your imagination for your next face painting project.</p>
+                </div>
+                
+                <div class="inspiration__content">
+                    <!-- Inspiration Sources -->
+                    <div class="inspiration__sources">
+                        <h3 class="inspiration__sources-title">Top Sources of Inspiration</h3>
+                        
+                        <div class="sources__grid">
+                            <!-- Source Card 1 -->
+                            <div class="source-card">
+                                <div class="source-card__icon">🌿</div>
+                                <h4 class="source-card__title">Nature & Animals</h4>
+                                <p class="source-card__text">Draw inspiration from wildlife, flowers, and natural patterns. The organic shapes and vibrant colors of nature provide endless possibilities for face paint designs.</p>
+                            </div>
+                            
+                            <!-- Source Card 2 -->
+                            <div class="source-card">
+                                <div class="source-card__icon">🎨</div>
+                                <h4 class="source-card__title">Famous Artwork</h4>
+                                <p class="source-card__text">Study art movements like surrealism, pop art, or abstract expressionism. Artists like Picasso, Van Gogh, and Warhol offer unique visual elements to incorporate.</p>
+                            </div>
+                            
+                            <!-- Source Card 3 -->
+                            <div class="source-card">
+                                <div class="source-card__icon">📚</div>
+                                <h4 class="source-card__title">Books & Movies</h4>
+                                <p class="source-card__text">Popular characters, symbols, and themes from books, films, and TV shows can be translated into stunning face paint designs that resonate with audiences.</p>
+                            </div>
+                            
+                            <!-- Source Card 4 -->
+                            <div class="source-card">
+                                <div class="source-card__icon">🌎</div>
+                                <h4 class="source-card__title">Global Cultures</h4>
+                                <p class="source-card__text">Explore traditional patterns and symbols from different cultures around the world. From African tribal designs to Japanese kabuki makeup.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Tips & Tricks -->
+                    <div class="inspiration__tips">
+                        <h3 class="inspiration__tips-title">Creative Techniques</h3>
+                        
+                        <div class="tips__list">
+                            <div class="tip">
+                                <div class="tip__number">01</div>
+                                <div class="tip__content">
+                                    <h4 class="tip__title">Combine Simple Elements</h4>
+                                    <p class="tip__text">Start with basic shapes and patterns, then combine them in unexpected ways to create unique designs.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="tip">
+                                <div class="tip__number">02</div>
+                                <div class="tip__content">
+                                    <h4 class="tip__title">Use Color Psychology</h4>
+                                    <p class="tip__text">Choose colors that evoke specific emotions or complement the wearer's features. Contrasting colors create visual impact.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="tip">
+                                <div class="tip__number">03</div>
+                                <div class="tip__content">
+                                    <h4 class="tip__title">Play with Light & Dimension</h4>
+                                    <p class="tip__text">Add highlights and shadows to create depth and make your designs pop. Metallic and UV paints can add another dimension.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="tip">
+                                <div class="tip__number">04</div>
+                                <div class="tip__content">
+                                    <h4 class="tip__title">Experiment with Textures</h4>
+                                    <p class="tip__text">Use different application techniques to create various textures—sponges for softness, brushes for clean lines, and stippling for texture.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="tip">
+                                <div class="tip__number">05</div>
+                                <div class="tip__content">
+                                    <h4 class="tip__title">Follow Facial Contours</h4>
+                                    <p class="tip__text">Work with the natural shape of the face to enhance your design. Use cheekbones, eyes, and jawlines as design guides.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="inspiration__cta">
+                    <p class="inspiration__cta-text">Ready to transform your inspirations into stunning face paint designs?</p>
+                    <a href="#generator" class="btn btn--primary">Create Your Design</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="features">
+            <div class="features__container container">
+                <div class="features__header">
+                    <h2 class="features__title">Why Choose Our Face Paint Generator</h2>
+                    <p class="features__subtitle">Discover the powerful tools and features that make creating face paint designs easier than ever before.</p>
+                </div>
+                
+                <div class="features__grid">
+                    <!-- Feature 1: AI Generation -->
+                    <div class="feature-card">
+                        <div class="feature-card__icon-container">
+                            <div class="feature-card__icon">🤖</div>
+                        </div>
+                        <div class="feature-card__content">
+                            <h3 class="feature-card__title">AI-Powered Design</h3>
+                            <p class="feature-card__text">Advanced artificial intelligence creates unique, custom face paint designs based on your descriptions and preferences.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Feature 2: Style Variety -->
+                    <div class="feature-card">
+                        <div class="feature-card__icon-container">
+                            <div class="feature-card__icon">🎨</div>
+                        </div>
+                        <div class="feature-card__content">
+                            <h3 class="feature-card__title">Multiple Styles</h3>
+                            <p class="feature-card__text">Choose from a wide range of styles including animals, superheroes, fantasy characters, and abstract designs.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Feature 3: Complexity Levels -->
+                    <div class="feature-card">
+                        <div class="feature-card__icon-container">
+                            <div class="feature-card__icon">⚙️</div>
+                        </div>
+                        <div class="feature-card__content">
+                            <h3 class="feature-card__title">Adjustable Complexity</h3>
+                            <p class="feature-card__text">Set your desired complexity level from beginner-friendly to professional designs to match your skill level.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Feature 4: Save & Share -->
+                    <div class="feature-card">
+                        <div class="feature-card__icon-container">
+                            <div class="feature-card__icon">💾</div>
+                        </div>
+                        <div class="feature-card__content">
+                            <h3 class="feature-card__title">Save & Share</h3>
+                            <p class="feature-card__text">Download your designs instantly or share them directly to social media to showcase your creativity.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Feature 5: Design Library -->
+                    <div class="feature-card">
+                        <div class="feature-card__icon-container">
+                            <div class="feature-card__icon">📚</div>
+                        </div>
+                        <div class="feature-card__content">
+                            <h3 class="feature-card__title">Extensive Library</h3>
+                            <p class="feature-card__text">Access our growing collection of pre-made designs for quick inspiration or use as a starting point.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Feature 6: Step-by-Step Guides -->
+                    <div class="feature-card">
+                        <div class="feature-card__icon-container">
+                            <div class="feature-card__icon">📝</div>
+                        </div>
+                        <div class="feature-card__content">
+                            <h3 class="feature-card__title">Application Tips</h3>
+                            <p class="feature-card__text">Get helpful suggestions and techniques for applying your design, including recommended materials and tools.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="features__highlight">
+                    <div class="highlight__content">
+                        <h3 class="highlight__title">Unlimited Creativity at Your Fingertips</h3>
+                        <p class="highlight__text">Our AI-powered generator creates unlimited unique designs, so you'll never run out of fresh ideas for your face painting projects.</p>
+                        <a href="#generator" class="btn btn--primary">Try It Now</a>
+                    </div>
+                    <div class="highlight__visual">
+                        <div class="highlight__placeholder">
+                            <div class="highlight__placeholder-icon">✨</div>
+                        </div>
+                        <!-- <img src="assets/images/features-highlight.jpg" alt="Multiple face paint designs" class="highlight__image"> -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section id="faq" class="faq">
+            <div class="faq__container container">
+                <div class="faq__header">
+                    <h2 class="faq__title">Frequently Asked Questions</h2>
+                    <p class="faq__subtitle">Find answers to the most common questions about our face paint design generator.</p>
+                </div>
+                
+                <div class="faq__accordion">
+                    <!-- FAQ Item 1 -->
+                    <div class="faq__item">
+                        <div class="faq__question">
+                            <h3>How does the AI face paint generator work?</h3>
+                            <div class="faq__icon">
+                                <span class="faq__icon-plus">+</span>
+                                <span class="faq__icon-minus">-</span>
+                            </div>
+                        </div>
+                        <div class="faq__answer">
+                            <p>Our AI generator uses advanced image generation algorithms to create unique face paint designs based on your text descriptions and selected options. Simply describe what you want, select a category, style, and complexity level, then click "Generate Design" to see your custom creation.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- FAQ Item 2 -->
+                    <div class="faq__item">
+                        <div class="faq__question">
+                            <h3>Can I use the generated designs for commercial purposes?</h3>
+                            <div class="faq__icon">
+                                <span class="faq__icon-plus">+</span>
+                                <span class="faq__icon-minus">-</span>
+                            </div>
+                        </div>
+                        <div class="faq__answer">
+                            <p>Yes! All designs generated through our platform are royalty-free and can be used for both personal and commercial purposes. Whether you're a professional face painter, event organizer, or creating content, you're free to use the designs however you wish.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- FAQ Item 3 -->
+                    <div class="faq__item">
+                        <div class="faq__question">
+                            <h3>What's the difference between the complexity levels?</h3>
+                            <div class="faq__icon">
+                                <span class="faq__icon-plus">+</span>
+                                <span class="faq__icon-minus">-</span>
+                            </div>
+                        </div>
+                        <div class="faq__answer">
+                            <p>The complexity levels indicate the difficulty and intricacy of the design:</p>
+                            <ul>
+                                <li><strong>Beginner:</strong> Simple designs with few elements, perfect for those new to face painting. Typically takes 10-15 minutes to apply.</li>
+                                <li><strong>Intermediate:</strong> More detailed designs with additional elements, suitable for those with some experience. Usually takes 15-30 minutes.</li>
+                                <li><strong>Advanced:</strong> Complex designs with multiple elements and techniques, ideal for experienced painters. May take 30-45 minutes.</li>
+                                <li><strong>Professional:</strong> Highly detailed artistic designs that require significant skill and experience. Can take 45+ minutes to complete.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- FAQ Item 4 -->
+                    <div class="faq__item">
+                        <div class="faq__question">
+                            <h3>How do I save or share my generated designs?</h3>
+                            <div class="faq__icon">
+                                <span class="faq__icon-plus">+</span>
+                                <span class="faq__icon-minus">-</span>
+                            </div>
+                        </div>
+                        <div class="faq__answer">
+                            <p>Once your design is generated, you'll see "Save" and "Regenerate" buttons under the image. Clicking "Save" will download the image to your device. You can also share designs directly to social media platforms by using your device's share functionality with the downloaded image.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- FAQ Item 5 -->
+                    <div class="faq__item">
+                        <div class="faq__question">
+                            <h3>What face paint products do you recommend?</h3>
+                            <div class="faq__icon">
+                                <span class="faq__icon-plus">+</span>
+                                <span class="faq__icon-minus">-</span>
+                            </div>
+                        </div>
+                        <div class="faq__answer">
+                            <p>While we don't sell face paint products directly, we recommend using professional-grade, water-based face paints that are specifically formulated for skin use. Look for products that are:</p>
+                            <ul>
+                                <li>FDA-compliant or similar certification in your region</li>
+                                <li>Hypoallergenic and non-toxic</li>
+                                <li>Easy to apply and remove</li>
+                                <li>Vibrant and long-lasting</li>
+                            </ul>
+                            <p>Brands like Snazaroo, Mehron, Diamond FX, and TAG are popular choices among professional face painters.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- FAQ Item 6 -->
+                    <div class="faq__item">
+                        <div class="faq__question">
+                            <h3>Do I need artistic skills to use these designs?</h3>
+                            <div class="faq__icon">
+                                <span class="faq__icon-plus">+</span>
+                                <span class="faq__icon-minus">-</span>
+                            </div>
+                        </div>
+                        <div class="faq__answer">
+                            <p>Not necessarily! Our beginner-friendly designs are specifically created to be achievable by those with limited artistic experience. Start with simpler designs and work your way up as you gain confidence. We also provide application tips with each design to help guide you through the process.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- FAQ Item 7 -->
+                    <div class="faq__item">
+                        <div class="faq__question">
+                            <h3>Is there a limit to how many designs I can generate?</h3>
+                            <div class="faq__icon">
+                                <span class="faq__icon-plus">+</span>
+                                <span class="faq__icon-minus">-</span>
+                            </div>
+                        </div>
+                        <div class="faq__answer">
+                            <p>Our free tier allows you to generate up to 5 designs per day. If you need more, you can upgrade to our premium plan for unlimited generations and additional features. Check our pricing page for more details on available plans.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="faq__cta">
+                    <p>Still have questions?</p>
+                    <a href="#" class="btn btn--secondary">Contact Support</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="footer__container container">
+            <div class="footer__main">
+                <div class="footer__brand">
+                    <a href="/" class="footer__logo">
+                        <img src="assets/icons/palette.svg" alt="Face Paint Ideas Logo" class="footer__logo-icon">
+                        <span class="footer__logo-text">Face Paint Ideas</span>
+                    </a>
+                    <p class="footer__description">Your AI-powered companion for creative and inspiring face paint designs for every occasion and skill level.</p>
+                    
+                    <div class="footer__social">
+                        <a href="#" class="social-link">
+                            <span class="social-icon">📱</span>
+                        </a>
+                        <a href="#" class="social-link">
+                            <span class="social-icon">📸</span>
+                        </a>
+                        <a href="#" class="social-link">
+                            <span class="social-icon">📍</span>
+                        </a>
+                        <a href="#" class="social-link">
+                            <span class="social-icon">🐦</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer__bottom">
+                <div class="footer__copyright">
+                    <p>&copy; 2023 Face Paint Ideas. All rights reserved.</p>
+                </div>
+                
+                <div class="footer__legal">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // FAQ Accordion Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const faqItems = document.querySelectorAll('.faq__item');
+            
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq__question');
+                
+                question.addEventListener('click', () => {
+                    // Toggle active class on clicked item
+                    const isActive = item.classList.contains('active');
+                    
+                    // Close all FAQ items
+                    faqItems.forEach(faqItem => {
+                        faqItem.classList.remove('active');
+                    });
+                    
+                    // If the clicked item wasn't active, open it
+                    if (!isActive) {
+                        item.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html> 

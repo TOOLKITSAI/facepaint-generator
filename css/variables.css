@@ -1,0 +1,33 @@
+:root {
+    /* Colors */
+    --color-background: #161616;
+    --color-surface: #2F2F2F;
+    --color-accent: #FFB627;
+    --color-text: #FFFFFF;
+    --color-text-secondary: rgba(255, 255, 255, 0.7);
+    --color-footer: #121212;
+
+    /* Typography */
+    --font-logo: 'Comforter Brush', cursive;
+    --font-primary: 'Inter', sans-serif;
+    
+    /* Spacing */
+    --spacing-xs: 0.25rem;  /* 4px */
+    --spacing-sm: 0.5rem;   /* 8px */
+    --spacing-md: 1rem;     /* 16px */
+    --spacing-lg: 2rem;     /* 32px */
+    --spacing-xl: 4rem;     /* 64px */
+
+    /* Border Radius */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 16px;
+
+    /* Transitions */
+    --transition-fast: 0.2s ease;
+    --transition-normal: 0.3s ease;
+    
+    /* Container */
+    --container-max-width: 1200px;
+    --container-padding: var(--spacing-md);
+} 
