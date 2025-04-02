@@ -36,9 +36,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if (previewLoading) previewLoading.classList.remove('hidden');
             
             try {
+                console.log("发送生成请求...");
                 // 调用生成API
                 const response = await fetch('https://facepaint-generator.toolkitsai.workers.dev', {
                     method: 'POST',
+                    mode: 'cors',
+                    credentials: 'omit',
                     headers: {
                         'Content-Type': 'application/json',
                     },
@@ -50,17 +53,21 @@ document.addEventListener('DOMContentLoaded', () => {
                     })
                 });
                 
+                console.log("收到响应:", response);
                 const data = await response.json();
+                console.log("解析的数据:", data);
                 
                 if (!data.success) {
                     throw new Error(data.error || '生成请求失败');
                 }
                 
-                console.log('生成任务已创建:', data);
+                if (!data.id) {
+                    throw new Error('未收到有效的预测ID');
+                }
                 
+                console.log('生成任务已创建，ID:', data.id);
                 // 开始轮询检查生成状态
-                const predictionId = data.id;
-                pollPredictionStatus(predictionId);
+                pollPredictionStatus(data.id);
                 
             } catch (error) {
                 console.error('生成失败:', error);
