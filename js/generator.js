@@ -23,6 +23,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize custom options
     initializeCustomOptions();
     
+    // Initialize Gallery enhancements
+    initializeGalleryEnhancements();
+    
     // Generate button click handler
     if (generateBtn) {
         generateBtn.addEventListener('click', async () => {
@@ -322,11 +325,12 @@ document.addEventListener('DOMContentLoaded', () => {
             // Add to beginning of history
             history.unshift({
                 ...item,
-                timestamp: new Date().toISOString()
+                timestamp: new Date().toISOString(),
+                id: generateUniqueId() // Add unique ID for each history item
             });
             
-            // Limit history to 10 items
-            const limitedHistory = history.slice(0, 10);
+            // Limit history to 20 items (increased from 10)
+            const limitedHistory = history.slice(0, 20);
             localStorage.setItem('facepainting-history', JSON.stringify(limitedHistory));
             
             // If Gallery section exists, update display
@@ -337,41 +341,508 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
+    // Generate a unique ID for history items
+    function generateUniqueId() {
+        return Date.now().toString(36) + Math.random().toString(36).substring(2);
+    }
+    
+    // Initialize Gallery enhancements
+    function initializeGalleryEnhancements() {
+        const gallerySection = document.getElementById('gallery');
+        if (!gallerySection) return;
+        
+        const galleryHeader = gallerySection.querySelector('.gallery__header');
+        const gallerySubtitle = gallerySection.querySelector('.gallery__subtitle');
+        const galleryFilter = gallerySection.querySelector('.gallery__filter');
+        const galleryGrid = gallerySection.querySelector('.gallery__grid');
+        const galleryActions = gallerySection.querySelector('.gallery__actions');
+        
+        // Create header actions container
+        const headerActions = document.createElement('div');
+        headerActions.className = 'gallery__header-actions';
+        
+        // Create controls container
+        const controlsContainer = document.createElement('div');
+        controlsContainer.className = 'gallery__controls';
+        
+        // Create sort control
+        const sortControl = document.createElement('div');
+        sortControl.innerHTML = `
+            <span class="gallery__control-label">Sort by:</span>
+            <select class="gallery__sort-select" id="gallery-sort">
+                <option value="newest">Newest First</option>
+                <option value="oldest">Oldest First</option>
+                <option value="alphabetical">Alphabetical</option>
+            </select>
+        `;
+        
+        // Add controls to container
+        controlsContainer.appendChild(sortControl);
+        
+        // Add filter buttons and controls to header actions
+        if (galleryFilter) {
+            headerActions.appendChild(galleryFilter);
+        }
+        headerActions.appendChild(controlsContainer);
+        
+        // Insert header actions after the subtitle
+        if (gallerySubtitle) {
+            gallerySubtitle.after(headerActions);
+        } else if (galleryHeader) {
+            galleryHeader.appendChild(headerActions);
+        }
+        
+        // Create management buttons
+        const managementContainer = document.createElement('div');
+        managementContainer.className = 'gallery__management';
+        managementContainer.innerHTML = `
+            <button class="btn btn--secondary" id="export-history">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M11 14.59V3a1 1 0 0 1 2 0v11.59l3.3-3.3a1 1 0 0 1 1.4 1.42l-5 5a1 1 0 0 1-1.4 0l-5-5a1 1 0 0 1 1.4-1.42l3.3 3.3zM3 17a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h18a1 1 0 0 0 1-1v-3a1 1 0 0 0-2 0v2H4v-2a1 1 0 0 0-1-1z"></path></svg>
+                Export History
+            </button>
+            <button class="btn btn--secondary" id="import-history">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M11 14.59V3a1 1 0 0 1 2 0v11.59l3.3-3.3a1 1 0 0 1 1.4 1.42l-5 5a1 1 0 0 1-1.4 0l-5-5a1 1 0 0 1 1.4-1.42l3.3 3.3zM3 17a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h18a1 1 0 0 0 1-1v-3a1 1 0 0 0-2 0v2H4v-2a1 1 0 0 0-1-1z"></path></svg>
+                Import History
+            </button>
+            <button class="btn btn--secondary" id="clear-history">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17 6h5v2h-2v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8H2V6h5V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v3zm1 2H6v12h12V8zm-9 3h2v6H9v-6zm4 0h2v6h-2v-6zM9 4v2h6V4H9z"></path></svg>
+                Clear History
+            </button>
+        `;
+        
+        // Replace or add management buttons
+        if (galleryActions) {
+            galleryActions.replaceWith(managementContainer);
+        } else if (galleryGrid) {
+            galleryGrid.after(managementContainer);
+        }
+        
+        // Create a hidden file input for importing history
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.accept = '.json';
+        fileInput.style.display = 'none';
+        fileInput.id = 'history-file-input';
+        document.body.appendChild(fileInput);
+        
+        // Create modal for viewing images
+        const modal = document.createElement('div');
+        modal.className = 'gallery__modal';
+        modal.innerHTML = `
+            <div class="gallery__modal-content">
+                <button class="gallery__modal-close">&times;</button>
+                <img src="" alt="" class="gallery__modal-image">
+                <div class="gallery__modal-details">
+                    <div class="gallery__modal-description"></div>
+                    <div class="gallery__modal-meta"></div>
+                    <div class="gallery__modal-actions">
+                        <button class="btn btn--primary btn--small modal-download">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M13 10h5l-6 6-6-6h5V3h2v7zm-9 9h16v-7h2v8a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-8h2v7z"></path></svg>
+                            Download
+                        </button>
+                        <button class="btn btn--secondary btn--small modal-share">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"></path></svg>
+                            Share
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        
+        // Add event listeners for sort and filter
+        const sortSelect = document.getElementById('gallery-sort');
+        if (sortSelect) {
+            sortSelect.addEventListener('change', () => {
+                updateGallery();
+            });
+        }
+        
+        const filterButtons = document.querySelectorAll('.filter__btn');
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                // Add active class to clicked button
+                button.classList.add('active');
+                // Update gallery
+                updateGallery();
+            });
+        });
+        
+        // Add event listeners for management buttons
+        const exportBtn = document.getElementById('export-history');
+        if (exportBtn) {
+            exportBtn.addEventListener('click', exportHistory);
+        }
+        
+        const importBtn = document.getElementById('import-history');
+        if (importBtn) {
+            importBtn.addEventListener('click', () => {
+                fileInput.click();
+            });
+        }
+        
+        fileInput.addEventListener('change', importHistory);
+        
+        const clearBtn = document.getElementById('clear-history');
+        if (clearBtn) {
+            clearBtn.addEventListener('click', clearHistory);
+        }
+        
+        // Add modal close event
+        const modalCloseBtn = modal.querySelector('.gallery__modal-close');
+        if (modalCloseBtn) {
+            modalCloseBtn.addEventListener('click', () => {
+                modal.classList.remove('active');
+            });
+        }
+        
+        // Initial gallery update
+        updateGallery();
+    }
+    
     // Update Gallery display
     function updateGallery() {
         const galleryGrid = document.getElementById('gallery-grid');
         if (!galleryGrid) return;
         
         try {
+            // Get history from localStorage
             const history = JSON.parse(localStorage.getItem('facepainting-history') || '[]');
+            
+            // Apply filtering
+            const activeFilter = document.querySelector('.filter__btn.active');
+            const filterValue = activeFilter ? activeFilter.dataset.filter : 'all';
+            
+            let filteredHistory = [...history];
+            if (filterValue !== 'all') {
+                filteredHistory = history.filter(item => {
+                    // Match by category or style
+                    return (item.category && item.category.toLowerCase().includes(filterValue.toLowerCase())) || 
+                           (item.style && item.style.toLowerCase().includes(filterValue.toLowerCase()));
+                });
+            }
+            
+            // Apply sorting
+            const sortSelect = document.getElementById('gallery-sort');
+            const sortValue = sortSelect ? sortSelect.value : 'newest';
+            
+            if (sortValue === 'newest') {
+                // Already sorted by newest (from the saveToHistory function)
+            } else if (sortValue === 'oldest') {
+                filteredHistory.reverse();
+            } else if (sortValue === 'alphabetical') {
+                filteredHistory.sort((a, b) => {
+                    const textA = a.description.toLowerCase();
+                    const textB = b.description.toLowerCase();
+                    return textA.localeCompare(textB);
+                });
+            }
             
             // Clear existing content
             galleryGrid.innerHTML = '';
             
-            // If history exists, add to Gallery
-            if (history.length > 0) {
-                history.forEach(item => {
-                    const galleryItem = document.createElement('div');
-                    galleryItem.className = 'gallery__item';
-                    
-                    galleryItem.innerHTML = `
-                        <div class="gallery__image-container">
-                            <img src="${item.imageUrl}" alt="${item.description}" class="gallery__image">
-                        </div>
-                        <div class="gallery__details">
-                            <p class="gallery__description">${item.description}</p>
-                            <div class="gallery__tags">
-                                ${item.style ? `<span class="gallery__tag">${item.style}</span>` : ''}
-                                ${item.complexity ? `<span class="gallery__tag">${item.complexity}</span>` : ''}
-                            </div>
-                        </div>
-                    `;
-                    
-                    galleryGrid.appendChild(galleryItem);
-                });
+            // If no history matches filters, show empty state
+            if (filteredHistory.length === 0) {
+                const emptyState = document.createElement('div');
+                emptyState.className = 'gallery__empty';
+                emptyState.innerHTML = `
+                    <div class="gallery__empty-icon">📷</div>
+                    <p class="gallery__empty-text">No designs found. Generate some designs to see them here!</p>
+                    <a href="#generator" class="btn btn--primary">Create a Design</a>
+                `;
+                galleryGrid.appendChild(emptyState);
+                return;
             }
+            
+            // Add filtered items to gallery
+            filteredHistory.forEach(item => {
+                const galleryItem = document.createElement('div');
+                galleryItem.className = 'gallery__item';
+                galleryItem.dataset.id = item.id || '';
+                
+                galleryItem.innerHTML = `
+                    <div class="gallery__image-container">
+                        <img src="${item.imageUrl}" alt="${item.description}" class="gallery__image">
+                        <div class="gallery__item-actions">
+                            <button class="gallery__action-btn gallery__action-btn--view" title="View Design">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path></svg>
+                            </button>
+                            <button class="gallery__action-btn gallery__action-btn--delete" title="Delete Design">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="gallery__details">
+                        <p class="gallery__description">${item.description}</p>
+                        <div class="gallery__tags">
+                            ${item.style ? `<span class="gallery__tag">${item.style}</span>` : ''}
+                            ${item.complexity ? `<span class="gallery__tag">${item.complexity}</span>` : ''}
+                        </div>
+                    </div>
+                `;
+                
+                // Add event listeners for actions
+                galleryGrid.appendChild(galleryItem);
+                
+                // View button listener
+                const viewBtn = galleryItem.querySelector('.gallery__action-btn--view');
+                if (viewBtn) {
+                    viewBtn.addEventListener('click', () => openDesignModal(item));
+                }
+                
+                // Delete button listener
+                const deleteBtn = galleryItem.querySelector('.gallery__action-btn--delete');
+                if (deleteBtn) {
+                    deleteBtn.addEventListener('click', () => {
+                        if (confirm('Are you sure you want to remove this design from your history?')) {
+                            removeFromHistory(item.id);
+                        }
+                    });
+                }
+                
+                // Make the whole item clickable to view
+                galleryItem.addEventListener('click', (e) => {
+                    // Only trigger if the click wasn't on a button
+                    if (!e.target.closest('button')) {
+                        openDesignModal(item);
+                    }
+                });
+            });
         } catch (error) {
             console.error('Failed to update Gallery:', error);
+        }
+    }
+    
+    // Open design modal with details
+    function openDesignModal(item) {
+        const modal = document.querySelector('.gallery__modal');
+        if (!modal) return;
+        
+        const modalImage = modal.querySelector('.gallery__modal-image');
+        const modalDescription = modal.querySelector('.gallery__modal-description');
+        const modalMeta = modal.querySelector('.gallery__modal-meta');
+        
+        if (modalImage) modalImage.src = item.imageUrl;
+        if (modalImage) modalImage.alt = item.description;
+        if (modalDescription) modalDescription.textContent = item.description;
+        
+        if (modalMeta) {
+            let metaHTML = '';
+            if (item.style) metaHTML += `<div><strong>Style:</strong> ${item.style}</div>`;
+            if (item.category) metaHTML += `<div><strong>Category:</strong> ${item.category}</div>`;
+            if (item.complexity) metaHTML += `<div><strong>Complexity:</strong> ${item.complexity}</div>`;
+            
+            // Add creation date
+            if (item.timestamp) {
+                const date = new Date(item.timestamp);
+                metaHTML += `<div><strong>Created:</strong> ${date.toLocaleDateString()}</div>`;
+            }
+            
+            modalMeta.innerHTML = metaHTML;
+        }
+        
+        // Setup download button
+        const downloadBtn = modal.querySelector('.modal-download');
+        if (downloadBtn) {
+            downloadBtn.onclick = async () => {
+                try {
+                    // Get image data
+                    const response = await fetch(item.imageUrl);
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    
+                    // Create download link and trigger click
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `facepaint-${new Date().getTime()}.png`;
+                    document.body.appendChild(a);
+                    a.click();
+                    
+                    // Cleanup
+                    setTimeout(() => {
+                        document.body.removeChild(a);
+                        window.URL.revokeObjectURL(url);
+                    }, 100);
+                    
+                } catch (error) {
+                    console.error('Failed to download image:', error);
+                    alert('Failed to download image, please try again');
+                }
+            };
+        }
+        
+        // Setup share button with a dropdown
+        const shareBtn = modal.querySelector('.modal-share');
+        if (shareBtn) {
+            shareBtn.onclick = () => {
+                // Create simple shareOnSocial function for modal
+                const openShareWindow = (platform) => {
+                    const url = encodeURIComponent(window.location.href);
+                    const text = encodeURIComponent(`Check out this amazing face paint design: ${item.description}`);
+                    const media = encodeURIComponent(item.imageUrl);
+                    
+                    let shareUrl = '';
+                    
+                    switch(platform) {
+                        case 'facebook':
+                            shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${text}`;
+                            break;
+                        case 'twitter':
+                            shareUrl = `https://twitter.com/intent/tweet?url=${url}&text=${text}`;
+                            break;
+                        case 'pinterest':
+                            shareUrl = `https://pinterest.com/pin/create/button/?url=${url}&media=${media}&description=${text}`;
+                            break;
+                        case 'email':
+                            shareUrl = `mailto:?subject=${encodeURIComponent('Check out this face paint design!')}&body=${text}%20${url}`;
+                            break;
+                    }
+                    
+                    if (shareUrl) {
+                        window.open(shareUrl, '_blank');
+                    }
+                };
+                
+                // Simple sharing popup
+                const platforms = ['facebook', 'twitter', 'pinterest', 'email'];
+                const platformChoice = prompt('Share on: facebook, twitter, pinterest, or email', 'facebook');
+                
+                if (platformChoice && platforms.includes(platformChoice.toLowerCase())) {
+                    openShareWindow(platformChoice.toLowerCase());
+                }
+            };
+        }
+        
+        // Show modal
+        modal.classList.add('active');
+    }
+    
+    // Remove item from history by ID
+    function removeFromHistory(id) {
+        if (!id) return;
+        
+        try {
+            const history = JSON.parse(localStorage.getItem('facepainting-history') || '[]');
+            const updatedHistory = history.filter(item => item.id !== id);
+            localStorage.setItem('facepainting-history', JSON.stringify(updatedHistory));
+            
+            // Update gallery display
+            updateGallery();
+        } catch (error) {
+            console.error('Failed to remove item from history:', error);
+        }
+    }
+    
+    // Export history to JSON file
+    function exportHistory() {
+        try {
+            const history = JSON.parse(localStorage.getItem('facepainting-history') || '[]');
+            
+            if (history.length === 0) {
+                alert('No history to export. Create some designs first!');
+                return;
+            }
+            
+            const dataStr = JSON.stringify(history, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `facepaint-history-${new Date().toISOString().slice(0, 10)}.json`;
+            document.body.appendChild(a);
+            a.click();
+            
+            setTimeout(() => {
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, 100);
+            
+        } catch (error) {
+            console.error('Failed to export history:', error);
+            alert('Failed to export history. Please try again.');
+        }
+    }
+    
+    // Import history from JSON file
+    function importHistory(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            try {
+                const importedHistory = JSON.parse(e.target.result);
+                
+                if (!Array.isArray(importedHistory)) {
+                    throw new Error('Invalid history format');
+                }
+                
+                // Validate each item has required fields
+                for (const item of importedHistory) {
+                    if (!item.imageUrl || !item.description) {
+                        throw new Error('Invalid history item format');
+                    }
+                    
+                    // Add ID if missing
+                    if (!item.id) {
+                        item.id = generateUniqueId();
+                    }
+                }
+                
+                // Merge with existing history
+                const existingHistory = JSON.parse(localStorage.getItem('facepainting-history') || '[]');
+                
+                // Create a Map to hold unique items by ID
+                const historyMap = new Map();
+                
+                // Add existing items first
+                existingHistory.forEach(item => {
+                    historyMap.set(item.id, item);
+                });
+                
+                // Add imported items, overwriting existing ones with the same ID
+                importedHistory.forEach(item => {
+                    historyMap.set(item.id, item);
+                });
+                
+                // Convert back to array and limit to 20 items
+                const mergedHistory = Array.from(historyMap.values());
+                mergedHistory.sort((a, b) => {
+                    const dateA = new Date(a.timestamp || 0);
+                    const dateB = new Date(b.timestamp || 0);
+                    return dateB - dateA;  // Sort by timestamp, newest first
+                });
+                
+                const limitedHistory = mergedHistory.slice(0, 20);
+                
+                // Save to localStorage
+                localStorage.setItem('facepainting-history', JSON.stringify(limitedHistory));
+                
+                // Update gallery display
+                updateGallery();
+                
+                alert(`Successfully imported ${importedHistory.length} designs!`);
+                
+            } catch (error) {
+                console.error('Failed to import history:', error);
+                alert('Failed to import history. The file might be corrupted or in an invalid format.');
+            }
+            
+            // Reset file input
+            event.target.value = '';
+        };
+        
+        reader.readAsText(file);
+    }
+    
+    // Clear all history
+    function clearHistory() {
+        if (confirm('Are you sure you want to clear all your design history? This cannot be undone.')) {
+            localStorage.setItem('facepainting-history', '[]');
+            updateGallery();
         }
     }
     
