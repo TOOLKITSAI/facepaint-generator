@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // 获取DOM元素
+    // Get DOM elements
     const generateBtn = document.querySelector('.btn--generate');
     const promptInput = document.getElementById('prompt');
     const categorySelect = document.getElementById('category');
@@ -15,29 +15,35 @@ document.addEventListener('DOMContentLoaded', () => {
     const regenerateBtn = document.querySelector('.preview-result__actions .btn:first-child');
     const saveBtn = document.querySelector('.preview-result__actions .btn:last-child');
     
-    // 点击生成按钮时的处理
+    // Show user guidance on first visit
+    showGuidance();
+    
+    // Generate button click handler
     if (generateBtn) {
         generateBtn.addEventListener('click', async () => {
-            // 获取用户输入
+            // Get user input
             const description = promptInput ? promptInput.value.trim() : '';
             const category = categorySelect ? categorySelect.value : '';
             const style = styleSelect ? styleSelect.value : '';
             const complexity = complexitySelect ? complexitySelect.value : '';
             
-            // 验证输入
+            // Validate input
             if (!description) {
-                alert('请描述你想要的面部彩绘设计');
+                alert('Please describe the face paint design you want');
                 return;
             }
             
-            // 显示加载状态
+            // Show loading state
             if (previewPlaceholder) previewPlaceholder.classList.add('hidden');
             if (previewResult) previewResult.classList.add('hidden');
             if (previewLoading) previewLoading.classList.remove('hidden');
             
+            // Initialize loading indicator
+            updateLoadingState('starting', 10);
+            
             try {
-                console.log("发送生成请求...");
-                // 调用生成API
+                console.log("Sending generation request...");
+                // Call generation API
                 const response = await fetch('https://facepaint-generator.toolkitsai.workers.dev', {
                     method: 'POST',
                     mode: 'cors',
@@ -53,118 +59,261 @@ document.addEventListener('DOMContentLoaded', () => {
                     })
                 });
                 
-                console.log("收到响应:", response);
+                console.log("Received response:", response);
                 const data = await response.json();
-                console.log("解析的数据:", data);
+                console.log("Parsed data:", data);
                 
                 if (!data.success) {
-                    throw new Error(data.error || '生成请求失败');
+                    throw new Error(data.error || 'Failed to generate design');
                 }
                 
                 if (!data.id) {
-                    throw new Error('未收到有效的预测ID');
+                    throw new Error('No valid prediction ID received');
                 }
                 
-                console.log('生成任务已创建，ID:', data.id);
-                // 开始轮询检查生成状态
+                console.log('Generation task created, ID:', data.id);
+                // Start polling for generation status
                 pollPredictionStatus(data.id);
                 
             } catch (error) {
-                console.error('生成失败:', error);
-                alert(`生成失败: ${error.message}`);
-                
-                // 恢复到占位符状态
-                if (previewPlaceholder) previewPlaceholder.classList.remove('hidden');
-                if (previewLoading) previewLoading.classList.add('hidden');
+                console.error('Generation failed:', error);
+                handleGenerationError(error);
             }
         });
     }
     
-    // 轮询检查生成状态
-    function pollPredictionStatus(id) {
-        console.log('开始检查状态，ID:', id);
+    // Update loading state with progress
+    function updateLoadingState(stage, progress = null) {
+        const loadingElement = document.querySelector('.preview-loading');
         
-        // 设置轮询间隔
+        // Create loading text element if it doesn't exist
+        let loadingText = loadingElement.querySelector('.loading-text');
+        if (!loadingText) {
+            loadingText = document.createElement('div');
+            loadingText.className = 'loading-text';
+            loadingElement.appendChild(loadingText);
+        }
+        
+        // Create progress bar if it doesn't exist
+        let progressBar = loadingElement.querySelector('.progress-bar');
+        if (!progressBar) {
+            progressBar = document.createElement('div');
+            progressBar.className = 'progress-bar';
+            progressBar.innerHTML = '<div class="progress"></div>';
+            loadingElement.appendChild(progressBar);
+        }
+        
+        // Update loading text based on stage
+        switch(stage) {
+            case 'starting':
+                loadingText.textContent = 'Preparing to create your face paint design...';
+                break;
+            case 'processing':
+                loadingText.textContent = 'Creating your beautiful face paint design (20-30 seconds)...';
+                break;
+            case 'refining':
+                loadingText.textContent = 'Refining details to make your design perfect...';
+                break;
+            default:
+                loadingText.textContent = 'Generating...';
+        }
+        
+        // Update progress bar if provided
+        if (progress !== null) {
+            const progressElement = progressBar.querySelector('.progress');
+            progressElement.style.width = `${progress}%`;
+        }
+    }
+    
+    // Handle generation errors with suggestions
+    function handleGenerationError(error) {
+        console.error('Generation failed:', error);
+        
+        let errorMessage = 'Sorry, we encountered a problem while creating your design.';
+        let suggestion = '';
+        
+        // Provide specific suggestions based on error type
+        if (error.message.includes('API')) {
+            errorMessage = 'Server Connection Issue';
+            suggestion = 'Please try again later. Our service might be temporarily busy.';
+        } else if (error.message.includes('valid')) {
+            errorMessage = 'Your prompt may need adjustment';
+            suggestion = 'Try using a more detailed or different description.';
+        } else if (error.message.includes('timeout')) {
+            errorMessage = 'Generation timed out';
+            suggestion = 'Please try refreshing the page and generating again.';
+        }
+        
+        // Create error message container
+        const errorContainer = document.createElement('div');
+        errorContainer.className = 'error-message';
+        errorContainer.innerHTML = `
+            <h4>${errorMessage}</h4>
+            <p>${suggestion}</p>
+            <button class="btn btn--small" id="try-again">Try Again</button>
+        `;
+        
+        // Add to preview container
+        const previewContainer = document.querySelector('.preview-container');
+        if (previewContainer) {
+            // Hide loading state
+            const loadingElement = document.querySelector('.preview-loading');
+            if (loadingElement) loadingElement.classList.add('hidden');
+            
+            // Remove any existing error messages
+            if (document.querySelector('.error-message')) {
+                document.querySelector('.error-message').remove();
+            }
+            
+            // Add new error message
+            previewContainer.appendChild(errorContainer);
+            
+            // Try again button handler
+            document.getElementById('try-again').addEventListener('click', () => {
+                errorContainer.remove();
+                document.querySelector('.preview-placeholder').classList.remove('hidden');
+            });
+        }
+    }
+    
+    // Poll for prediction status with enhanced progress tracking
+    function pollPredictionStatus(id) {
+        console.log('Starting status check, ID:', id);
+        
+        // Show initial status
+        updateLoadingState('starting');
+        let progressPercent = 10;
+        
+        // Set polling interval
         const pollInterval = setInterval(async () => {
             try {
                 const response = await fetch(`https://facepaint-status.toolkitsai.workers.dev?id=${id}`);
                 const data = await response.json();
                 
-                console.log('状态更新:', data);
+                console.log('Status update:', data);
                 
                 if (!data.success) {
                     clearInterval(pollInterval);
-                    throw new Error(data.error || '检查状态失败');
+                    throw new Error(data.error || 'Failed to check status');
                 }
                 
-                // 根据状态更新UI
-                if (data.status === 'succeeded') {
-                    clearInterval(pollInterval);
-                    
-                    // 获取生成的图像URL
-                    const imageUrl = data.output && data.output[0];
-                    
-                    if (imageUrl && resultImage) {
-                        resultImage.src = imageUrl;
-                        resultImage.alt = '生成的面部彩绘设计';
+                // Update UI based on status
+                switch(data.status) {
+                    case 'starting':
+                        updateLoadingState('starting', 15);
+                        progressPercent = 15;
+                        break;
+                    case 'processing':
+                        // Estimate progress
+                        if (progressPercent < 70) {
+                            progressPercent += 5;
+                        }
+                        updateLoadingState('processing', progressPercent);
+                        break;
+                    case 'succeeded':
+                        updateLoadingState('refining', 100);
+                        clearInterval(pollInterval);
                         
-                        if (previewLoading) previewLoading.classList.add('hidden');
-                        if (previewResult) previewResult.classList.remove('hidden');
+                        // Get generated image URL
+                        const imageUrl = data.output && data.output[0];
                         
-                        // 保存到历史记录
-                        saveToHistory({
-                            description: promptInput ? promptInput.value : '',
-                            category: categorySelect ? categorySelect.value : '',
-                            style: styleSelect ? styleSelect.value : '',
-                            complexity: complexitySelect ? complexitySelect.value : '',
-                            imageUrl
-                        });
-                    } else {
-                        throw new Error('无法获取生成的图像');
-                    }
-                    
-                } else if (data.status === 'failed') {
-                    clearInterval(pollInterval);
-                    throw new Error(data.error || '生成失败');
+                        if (imageUrl && resultImage) {
+                            // Preload image
+                            const img = new Image();
+                            img.onload = function() {
+                                resultImage.src = imageUrl;
+                                resultImage.alt = 'Generated face paint design';
+                                
+                                // Show result with fade-in effect
+                                if (previewLoading) previewLoading.classList.add('hidden');
+                                if (previewResult) {
+                                    previewResult.classList.remove('hidden');
+                                    previewResult.classList.add('fade-in');
+                                }
+                                
+                                // Save to history
+                                saveToHistory({
+                                    description: promptInput ? promptInput.value : '',
+                                    category: categorySelect ? categorySelect.value : '',
+                                    style: styleSelect ? styleSelect.value : '',
+                                    complexity: complexitySelect ? complexitySelect.value : '',
+                                    imageUrl
+                                });
+                            };
+                            img.src = imageUrl;
+                        } else {
+                            throw new Error('Unable to get generated image');
+                        }
+                        break;
+                        
+                    case 'failed':
+                        clearInterval(pollInterval);
+                        throw new Error(data.error || 'Generation failed');
                 }
-                // 如果是其他状态(processing, starting)，继续轮询
                 
             } catch (error) {
-                console.error('检查状态失败:', error);
+                console.error('Status check failed:', error);
                 clearInterval(pollInterval);
                 
-                if (previewPlaceholder) previewPlaceholder.classList.remove('hidden');
-                if (previewLoading) previewLoading.classList.add('hidden');
-                
-                alert(`生成失败: ${error.message}`);
+                handleGenerationError(error);
             }
-        }, 3000); // 每3秒检查一次
+        }, 3000); // Check every 3 seconds
     }
     
-    // 保存到历史记录
+    // Show guidance popup for first-time users
+    function showGuidance() {
+        // Only show for first-time visits
+        if (!localStorage.getItem('facepaint-guidance-shown')) {
+            
+            const guidancePopup = document.createElement('div');
+            guidancePopup.className = 'guidance-popup';
+            guidancePopup.innerHTML = `
+                <div class="guidance-content">
+                    <h3>Welcome to Face Paint Generator</h3>
+                    <p>👋 Here are some tips for best results:</p>
+                    <ul>
+                        <li>Describe your desired face paint design in detail (e.g., "Sunflower pattern children's face paint")</li>
+                        <li>Choose appropriate category and style for more targeted results</li>
+                        <li>Generation takes about 30-60 seconds, please be patient</li>
+                        <li>You can save designs and view them in your history</li>
+                    </ul>
+                    <button class="btn btn--primary" id="got-it">Got it!</button>
+                </div>
+            `;
+            
+            document.body.appendChild(guidancePopup);
+            
+            document.getElementById('got-it').addEventListener('click', () => {
+                guidancePopup.remove();
+                localStorage.setItem('facepaint-guidance-shown', 'true');
+            });
+        }
+    }
+    
+    // Save to history
     function saveToHistory(item) {
         try {
             const history = JSON.parse(localStorage.getItem('facepainting-history') || '[]');
             
-            // 添加到历史记录的前面
+            // Add to beginning of history
             history.unshift({
                 ...item,
                 timestamp: new Date().toISOString()
             });
             
-            // 限制历史记录数量为10个
+            // Limit history to 10 items
             const limitedHistory = history.slice(0, 10);
             localStorage.setItem('facepainting-history', JSON.stringify(limitedHistory));
             
-            // 如果有Gallery部分，更新显示
+            // If Gallery section exists, update display
             updateGallery();
             
         } catch (error) {
-            console.error('保存历史记录失败:', error);
+            console.error('Failed to save history:', error);
         }
     }
     
-    // 更新Gallery显示
+    // Update Gallery display
     function updateGallery() {
         const galleryGrid = document.getElementById('gallery-grid');
         if (!galleryGrid) return;
@@ -172,10 +321,10 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const history = JSON.parse(localStorage.getItem('facepainting-history') || '[]');
             
-            // 清空现有内容
+            // Clear existing content
             galleryGrid.innerHTML = '';
             
-            // 如果有历史记录，添加到Gallery
+            // If history exists, add to Gallery
             if (history.length > 0) {
                 history.forEach(item => {
                     const galleryItem = document.createElement('div');
@@ -198,51 +347,51 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             }
         } catch (error) {
-            console.error('更新Gallery失败:', error);
+            console.error('Failed to update Gallery:', error);
         }
     }
     
-    // 重新生成按钮
+    // Regenerate button
     if (regenerateBtn) {
         regenerateBtn.addEventListener('click', () => {
             if (generateBtn) generateBtn.click();
         });
     }
     
-    // 保存按钮
+    // Save button
     if (saveBtn) {
         saveBtn.addEventListener('click', async () => {
             if (!resultImage || !resultImage.src) {
-                alert('没有可保存的图像');
+                alert('No image to save');
                 return;
             }
             
             try {
-                // 获取图像数据
+                // Get image data
                 const response = await fetch(resultImage.src);
                 const blob = await response.blob();
                 const url = window.URL.createObjectURL(blob);
                 
-                // 创建下载链接并触发点击
+                // Create download link and trigger click
                 const a = document.createElement('a');
                 a.href = url;
                 a.download = `facepaint-${new Date().getTime()}.png`;
                 document.body.appendChild(a);
                 a.click();
                 
-                // 清理
+                // Cleanup
                 setTimeout(() => {
                     document.body.removeChild(a);
                     window.URL.revokeObjectURL(url);
                 }, 100);
                 
             } catch (error) {
-                console.error('保存图像失败:', error);
-                alert('保存图像失败，请重试');
+                console.error('Failed to save image:', error);
+                alert('Failed to save image, please try again');
             }
         });
     }
     
-    // 初始加载时更新Gallery
+    // Update Gallery on initial load
     updateGallery();
 });

@@ -1398,4 +1398,102 @@ h4 {
     .social-icon {
         font-size: 1.1rem;
     }
+}
+
+/* Generator UI Improvements */
+
+/* Progress bar styles */
+.progress-bar {
+    width: 80%;
+    height: 6px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+    margin: 12px auto;
+    overflow: hidden;
+}
+
+.progress-bar .progress {
+    height: 100%;
+    background: linear-gradient(90deg, #FF6B6B, #FF8E53);
+    width: 0%;
+    transition: width 0.8s ease;
+}
+
+/* Loading text styles */
+.loading-text {
+    font-size: 14px;
+    color: white;
+    margin-top: 8px;
+    text-align: center;
+}
+
+/* Error message styles */
+.error-message {
+    background-color: rgba(255, 107, 107, 0.1);
+    border-left: 4px solid #FF6B6B;
+    padding: 16px;
+    border-radius: 4px;
+    margin: 16px 0;
+    color: #333;
+}
+
+.error-message h4 {
+    color: #FF6B6B;
+    margin: 0 0 8px 0;
+    font-weight: 600;
+}
+
+.error-message p {
+    margin: 0 0 16px 0;
+    font-size: 14px;
+}
+
+/* Fade-in animation */
+.fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* User guidance popup */
+.guidance-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.guidance-content {
+    background-color: white;
+    max-width: 500px;
+    padding: 24px;
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.guidance-content h3 {
+    color: #333;
+    margin-top: 0;
+}
+
+.guidance-content ul {
+    padding-left: 20px;
+}
+
+.guidance-content li {
+    margin-bottom: 8px;
+    line-height: 1.5;
+}
+
+.guidance-content .btn {
+    margin-top: 16px;
 } 
