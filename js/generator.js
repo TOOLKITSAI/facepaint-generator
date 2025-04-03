@@ -427,6 +427,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="face-area__label">Face Area</div>
             <div class="face-area__options">
                 <div class="face-area__option selected" data-area="full">Full Face</div>
+                <div class="face-area__option" data-area="side">Side Face</div>
                 <div class="face-area__option" data-area="eyes">Eyes Only</div>
                 <div class="face-area__option" data-area="cheeks">Cheeks</div>
                 <div class="face-area__option" data-area="forehead">Forehead</div>

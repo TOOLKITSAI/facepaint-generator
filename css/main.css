@@ -1866,13 +1866,14 @@ h4 {
 }
 
 .color-picker__input {
-    width: 100%;
+    width: 30%;
     height: 40px;
     cursor: pointer;
     border: none;
     border-radius: var(--radius-sm);
     padding: 0;
     background: none;
+    aspect-ratio: 1/1; /* 使颜色选择器为正方形 */
 }
 
 .color-picker__input::-webkit-color-swatch-wrapper {
