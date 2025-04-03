@@ -121,35 +121,38 @@ h4 {
 /* Hero Section */
 .hero {
     position: relative;
-    padding: calc(var(--spacing-4xl) + var(--header-height)) 0 var(--spacing-3xl);
+    padding: 120px 0 100px; /* 保持上下内边距以确保足够的空间 */
     overflow: hidden;
 }
 
 .hero__container {
-    display: flex;
-    align-items: center;
     position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-xl);
+    align-items: center;
     z-index: 1;
 }
 
 .hero__content {
-    flex: 1;
     max-width: 600px;
-    padding-right: var(--spacing-xl);
 }
 
 .hero__title {
-    font-size: clamp(2.5rem, 5vw, 3.5rem);
-    font-weight: 700;
+    font-size: 3.5rem;
     margin-bottom: var(--spacing-lg);
-    line-height: 1.2;
-    color: var(--color-text);
+    line-height: 1.1;
+    background: linear-gradient(135deg, var(--color-text) 0%, var(--color-accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    max-width: 800px;
 }
 
 .hero__subtitle {
-    font-size: clamp(1rem, 2vw, 1.25rem);
-    margin-bottom: var(--spacing-xl);
+    font-size: 1.25rem;
     color: var(--color-text-secondary);
+    margin-bottom: var(--spacing-xl);
+    max-width: 700px;
     line-height: 1.6;
 }
 
@@ -158,68 +161,100 @@ h4 {
     gap: var(--spacing-md);
 }
 
-.hero__visual {
-    flex: 1;
-    display: flex;
-    justify-content: center;
+.btn {
+    display: inline-flex;
     align-items: center;
+    justify-content: center;
+    padding: 1rem 2rem;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    transition: all var(--transition-normal);
+}
+
+.btn--primary {
+    background-color: var(--color-accent);
+    color: var(--color-background);
+}
+
+.btn--primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(255, 182, 39, 0.3);
+}
+
+.btn--secondary {
+    background-color: transparent;
+    border: 2px solid var(--color-accent);
+    color: var(--color-accent);
+}
+
+.btn--secondary:hover {
+    background-color: var(--color-accent);
+    color: var(--color-background);
+}
+
+.hero__visual {
+    position: relative;
+    width: 100%;
+    height: 600px;
 }
 
 .hero__image-wrapper {
     position: relative;
     width: 100%;
-    max-width: 500px;
-    height: 400px;
+    height: 100%;
     border-radius: var(--radius-lg);
     overflow: hidden;
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    background-color: rgba(255, 255, 255, 0.05); /* Added subtle background for placeholder */
 }
 
 .hero__image {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.3s ease;
+    transition: transform var(--transition-normal);
 }
 
-.hero__image:hover {
-    transform: scale(1.03);
+.hero__image-wrapper:hover .hero__image {
+    transform: scale(1.05);
+}
+
+/* Placeholder style for missing hero image */
+.hero__placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-secondary);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 182, 39, 0.1));
+}
+
+.hero__placeholder-icon {
+    font-size: 3rem;
+    margin-bottom: var(--spacing-md);
+    color: var(--color-accent);
+}
+
+.hero__placeholder-text {
+    font-size: 1.1rem;
+    text-align: center;
+    max-width: 80%;
 }
 
 .hero__gradient {
     position: absolute;
     bottom: 0;
     left: 0;
-    right: 0;
-    height: 30%;
-    background: linear-gradient(to top, rgba(var(--color-background-rgb), 0.9), transparent);
-    pointer-events: none;
-    z-index: 1;
-}
-
-.hero__placeholder {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
     width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, rgba(var(--color-accent-rgb), 0.2), rgba(var(--color-accent-rgb), 0.05));
-    text-align: center;
-    padding: var(--spacing-xl);
+    height: 50%;
+    background: linear-gradient(to top, var(--color-background), transparent);
 }
 
-.hero__placeholder-icon {
-    font-size: 3rem;
-    margin-bottom: var(--spacing-md);
-}
-
-.hero__placeholder-text {
-    color: var(--color-text-secondary);
-    font-size: 1.1rem;
-    max-width: 280px;
-}
-
+/* Add shapes for visual interest */
 .hero__shapes {
     position: absolute;
     top: 0;
