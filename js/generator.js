@@ -472,6 +472,10 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Add social sharing functionality
     function addSocialSharing() {
+        // Remove any existing social share containers first
+        const existingShares = document.querySelectorAll('.social-share');
+        existingShares.forEach(container => container.remove());
+        
         // Create social sharing container
         const socialShareContainer = document.createElement('div');
         socialShareContainer.className = 'social-share';
