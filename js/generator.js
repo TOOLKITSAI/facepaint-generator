@@ -383,87 +383,80 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     // Filter gallery items
                     filterGalleryItems(filterValue);
+                    
+                    // Reset pagination when changing filters
+                    currentPage = 1;
+                    updateLoadMoreButtonVisibility();
                 });
             });
         }
+        
+        // Add load more button functionality
+        const loadMoreBtn = document.getElementById('load-more-btn');
+        if (loadMoreBtn) {
+            loadMoreBtn.addEventListener('click', () => {
+                currentPage++;
+                loadMoreDesigns();
+            });
+        }
+        
+        // Initial check for load more button visibility
+        updateLoadMoreButtonVisibility();
     }
     
-    // Filter gallery items based on category
-    function filterGalleryItems(filter) {
-        const galleryItems = document.querySelectorAll('.gallery__item');
+    // Global variables for pagination
+    let currentPage = 1;
+    const itemsPerPage = 6;
+    
+    // Update load more button visibility
+    function updateLoadMoreButtonVisibility() {
+        const loadMoreBtn = document.getElementById('load-more-btn');
+        if (!loadMoreBtn) return;
         
-        if (galleryItems.length === 0) return;
+        const filterValue = document.querySelector('.filter__btn.active')?.dataset.filter || 'all';
+        const totalDesigns = allFeaturedDesigns.filter(design => 
+            filterValue === 'all' || design.category === filterValue
+        ).length;
         
-        galleryItems.forEach(item => {
-            if (filter === 'all') {
-                item.style.display = 'block';
-            } else {
-                const itemCategory = item.dataset.category;
-                if (itemCategory && itemCategory.includes(filter)) {
-                    item.style.display = 'block';
-                } else {
-                    item.style.display = 'none';
-                }
-            }
-        });
+        const displayedItems = currentPage * itemsPerPage;
+        
+        // Show button if there are more items to display
+        if (displayedItems < totalDesigns) {
+            loadMoreBtn.style.display = 'flex';
+        } else {
+            loadMoreBtn.style.display = 'none';
+        }
     }
     
-    // Update Gallery display
-    function updateGallery() {
+    // Load more designs function
+    function loadMoreDesigns() {
         const galleryGrid = document.getElementById('gallery-grid');
         if (!galleryGrid) return;
         
-        // Clear existing content
-        galleryGrid.innerHTML = '';
+        const filterValue = document.querySelector('.filter__btn.active')?.dataset.filter || 'all';
         
-        // Display featured face paint designs instead of user history
-        const featuredDesigns = [
-            {
-                imageUrl: 'assets/images/gallery/featured-1.jpg',
-                description: 'Mystical Butterfly Fantasy',
-                style: 'Fantasy Characters',
-                complexity: 'Professional',
-                category: 'fantasy'
-            },
-            {
-                imageUrl: 'assets/images/gallery/featured-2.jpg',
-                description: 'Vibrant Festival Glitter Art',
-                style: 'Glitter & Sparkle',
-                complexity: 'Advanced',
-                category: 'festival'
-            },
-            {
-                imageUrl: 'assets/images/gallery/featured-3.jpg',
-                description: 'Elegant Floral Vine Design',
-                style: 'Floral & Nature',
-                complexity: 'Intermediate',
-                category: 'fantasy'
-            },
-            {
-                imageUrl: 'assets/images/gallery/featured-4.jpg',
-                description: 'Tiger-inspired Tribal Pattern',
-                style: 'Animal Designs',
-                complexity: 'Professional',
-                category: 'animal'
-            },
-            {
-                imageUrl: 'assets/images/gallery/featured-5.jpg',
-                description: 'Celestial Cosmic Night Sky',
-                style: 'Abstract Art',
-                complexity: 'Advanced',
-                category: 'abstract'
-            },
-            {
-                imageUrl: 'assets/images/gallery/featured-6.jpg',
-                description: 'Superhero Inspired Mask',
-                style: 'Superhero Looks',
-                complexity: 'Intermediate',
-                category: 'fantasy'
-            }
-        ];
+        // Filter designs based on current filter
+        const filteredDesigns = allFeaturedDesigns.filter(design => 
+            filterValue === 'all' || design.category === filterValue
+        );
         
-        // Add featured designs to Gallery
-        featuredDesigns.forEach(item => {
+        // Calculate start and end indices for the current page
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = Math.min(startIndex + itemsPerPage, filteredDesigns.length);
+        
+        // Get designs for current page
+        const designsToDisplay = filteredDesigns.slice(startIndex, endIndex);
+        
+        // Add designs to the gallery
+        addDesignsToGallery(designsToDisplay, galleryGrid);
+        
+        // Update load more button visibility
+        updateLoadMoreButtonVisibility();
+    }
+    
+    // Add designs to gallery helper function
+    function addDesignsToGallery(designs, container) {
+        designs.forEach(item => {
             const galleryItem = document.createElement('div');
             galleryItem.className = 'gallery__item';
             galleryItem.dataset.category = item.category || '';
@@ -481,8 +474,120 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
             
-            galleryGrid.appendChild(galleryItem);
+            container.appendChild(galleryItem);
         });
+    }
+    
+    // All featured designs collection
+    const allFeaturedDesigns = [
+        // Initial 6 designs
+        {
+            imageUrl: 'assets/images/gallery/featured-1.jpg',
+            description: 'Mystical Butterfly Fantasy',
+            style: 'Fantasy Characters',
+            complexity: 'Professional',
+            category: 'fantasy'
+        },
+        {
+            imageUrl: 'assets/images/gallery/featured-2.jpg',
+            description: 'Vibrant Festival Glitter Art',
+            style: 'Glitter & Sparkle',
+            complexity: 'Advanced',
+            category: 'festival'
+        },
+        {
+            imageUrl: 'assets/images/gallery/featured-3.jpg',
+            description: 'Elegant Floral Vine Design',
+            style: 'Floral & Nature',
+            complexity: 'Intermediate',
+            category: 'fantasy'
+        },
+        {
+            imageUrl: 'assets/images/gallery/featured-4.jpg',
+            description: 'Tiger-inspired Tribal Pattern',
+            style: 'Animal Designs',
+            complexity: 'Professional',
+            category: 'animal'
+        },
+        {
+            imageUrl: 'assets/images/gallery/featured-5.jpg',
+            description: 'Celestial Cosmic Night Sky',
+            style: 'Abstract Art',
+            complexity: 'Advanced',
+            category: 'abstract'
+        },
+        {
+            imageUrl: 'assets/images/gallery/featured-6.jpg',
+            description: 'Superhero Inspired Mask',
+            style: 'Superhero Looks',
+            complexity: 'Intermediate',
+            category: 'fantasy'
+        },
+        // Additional designs (will be loaded with "Load More")
+        {
+            imageUrl: 'assets/images/gallery/featured-7.jpg',
+            description: 'Sparkling Mermaid Scales',
+            style: 'Fantasy Characters',
+            complexity: 'Advanced',
+            category: 'fantasy'
+        },
+        {
+            imageUrl: 'assets/images/gallery/featured-8.jpg',
+            description: 'Geometric Neon Patterns',
+            style: 'Abstract Art',
+            complexity: 'Professional',
+            category: 'abstract'
+        },
+        {
+            imageUrl: 'assets/images/gallery/featured-9.jpg',
+            description: 'Vibrant Peacock Feathers',
+            style: 'Animal Designs',
+            complexity: 'Intermediate',
+            category: 'animal'
+        },
+        {
+            imageUrl: 'assets/images/gallery/featured-10.jpg',
+            description: 'Carnival Rainbow Explosion',
+            style: 'Festival Designs',
+            complexity: 'Professional',
+            category: 'festival'
+        },
+        {
+            imageUrl: 'assets/images/gallery/featured-11.jpg',
+            description: 'Enchanted Forest Fairy',
+            style: 'Fantasy Characters',
+            complexity: 'Advanced',
+            category: 'fantasy'
+        },
+        {
+            imageUrl: 'assets/images/gallery/featured-12.jpg',
+            description: 'Tribal War Paint',
+            style: 'Tribal & Ethnic',
+            complexity: 'Intermediate',
+            category: 'abstract'
+        },
+        // More can be added as needed
+    ];
+    
+    // Update Gallery display with pagination
+    function updateGallery() {
+        const galleryGrid = document.getElementById('gallery-grid');
+        if (!galleryGrid) return;
+        
+        // Reset pagination
+        currentPage = 1;
+        
+        // Clear existing content
+        galleryGrid.innerHTML = '';
+        
+        // Call loadMoreDesigns to display first page
+        loadMoreDesigns();
+    }
+    
+    // Filter gallery items based on category
+    function filterGalleryItems(filter) {
+        // Update gallery with filter applied
+        updateGallery();
     }
     
     // Initialize custom options section
