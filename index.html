@@ -161,132 +161,24 @@
             <div class="gallery__container container">
                 <div class="gallery__header">
                     <h2 class="gallery__title">Explore Creative Face Paint Designs</h2>
-                    <p class="gallery__subtitle">Browse our curated collection of stunning face paint designs for inspiration.</p>
+                    <p class="gallery__subtitle">Browse our curated collection of stunning professional face paint designs for inspiration.</p>
                 </div>
                 
                 <div class="gallery__filter">
                     <button class="filter__btn active" data-filter="all">All Designs</button>
-                    <button class="filter__btn" data-filter="children">Children</button>
+                    <button class="filter__btn" data-filter="fantasy">Fantasy</button>
                     <button class="filter__btn" data-filter="festival">Festival</button>
-                    <button class="filter__btn" data-filter="halloween">Halloween</button>
-                    <button class="filter__btn" data-filter="professional">Professional</button>
+                    <button class="filter__btn" data-filter="animal">Animal</button>
+                    <button class="filter__btn" data-filter="abstract">Abstract</button>
                 </div>
                 
-                <div class="gallery__grid">
-                    <!-- Gallery Item 1 -->
-                    <div class="gallery__item" data-category="children">
-                        <div class="gallery__image-wrapper">
-                            <div class="gallery__placeholder">
-                                <div class="gallery__placeholder-icon">🦋</div>
-                            </div>
-                            <!-- <img src="assets/images/gallery/butterfly.jpg" alt="Butterfly face paint design" class="gallery__image"> -->
-                        </div>
-                        <div class="gallery__content">
-                            <h3 class="gallery__item-title">Butterfly Fantasy</h3>
-                            <p class="gallery__item-category">Children's Party</p>
-                            <div class="gallery__item-tags">
-                                <span class="tag">Beginner</span>
-                                <span class="tag">15 min</span>
-                            </div>
-                        </div>
+                <div id="gallery-grid" class="gallery__grid">
+                    <!-- Gallery items will be dynamically inserted here -->
+                    <!-- Placeholder for when images are loading -->
+                    <div class="gallery__loading">
+                        <div class="gallery__loading-spinner"></div>
+                        <p>Loading inspiring face paint designs...</p>
                     </div>
-                    
-                    <!-- Gallery Item 2 -->
-                    <div class="gallery__item" data-category="festival">
-                        <div class="gallery__image-wrapper">
-                            <div class="gallery__placeholder">
-                                <div class="gallery__placeholder-icon">✨</div>
-                            </div>
-                            <!-- <img src="assets/images/gallery/festival.jpg" alt="Festival glitter face paint" class="gallery__image"> -->
-                        </div>
-                        <div class="gallery__content">
-                            <h3 class="gallery__item-title">Festival Glitter</h3>
-                            <p class="gallery__item-category">Festival & Carnival</p>
-                            <div class="gallery__item-tags">
-                                <span class="tag">Intermediate</span>
-                                <span class="tag">20 min</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Gallery Item 3 -->
-                    <div class="gallery__item" data-category="halloween">
-                        <div class="gallery__image-wrapper">
-                            <div class="gallery__placeholder">
-                                <div class="gallery__placeholder-icon">💀</div>
-                            </div>
-                            <!-- <img src="assets/images/gallery/skull.jpg" alt="Sugar skull face paint design" class="gallery__image"> -->
-                        </div>
-                        <div class="gallery__content">
-                            <h3 class="gallery__item-title">Sugar Skull</h3>
-                            <p class="gallery__item-category">Halloween Special</p>
-                            <div class="gallery__item-tags">
-                                <span class="tag">Advanced</span>
-                                <span class="tag">45 min</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Gallery Item 4 -->
-                    <div class="gallery__item" data-category="professional">
-                        <div class="gallery__image-wrapper">
-                            <div class="gallery__placeholder">
-                                <div class="gallery__placeholder-icon">🎭</div>
-                            </div>
-                            <!-- <img src="assets/images/gallery/theater.jpg" alt="Theatrical face paint design" class="gallery__image"> -->
-                        </div>
-                        <div class="gallery__content">
-                            <h3 class="gallery__item-title">Dramatic Persona</h3>
-                            <p class="gallery__item-category">Stage Performance</p>
-                            <div class="gallery__item-tags">
-                                <span class="tag">Professional</span>
-                                <span class="tag">60 min</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Gallery Item 5 -->
-                    <div class="gallery__item" data-category="children">
-                        <div class="gallery__image-wrapper">
-                            <div class="gallery__placeholder">
-                                <div class="gallery__placeholder-icon">🦁</div>
-                            </div>
-                            <!-- <img src="assets/images/gallery/lion.jpg" alt="Lion face paint design" class="gallery__image"> -->
-                        </div>
-                        <div class="gallery__content">
-                            <h3 class="gallery__item-title">Brave Lion</h3>
-                            <p class="gallery__item-category">Children's Party</p>
-                            <div class="gallery__item-tags">
-                                <span class="tag">Intermediate</span>
-                                <span class="tag">25 min</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Gallery Item 6 -->
-                    <div class="gallery__item" data-category="festival">
-                        <div class="gallery__image-wrapper">
-                            <div class="gallery__placeholder">
-                                <div class="gallery__placeholder-icon">🌈</div>
-                            </div>
-                            <!-- <img src="assets/images/gallery/rainbow.jpg" alt="Rainbow face paint design" class="gallery__image"> -->
-                        </div>
-                        <div class="gallery__content">
-                            <h3 class="gallery__item-title">Rainbow Dreams</h3>
-                            <p class="gallery__item-category">Festival & Carnival</p>
-                            <div class="gallery__item-tags">
-                                <span class="tag">Beginner</span>
-                                <span class="tag">15 min</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="gallery__actions">
-                    <button class="btn btn--secondary btn--load-more">
-                        <span class="btn__icon">+</span>
-                        Load More Designs
-                    </button>
                 </div>
             </div>
         </section>

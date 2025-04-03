@@ -23,6 +23,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize custom options
     initializeCustomOptions();
     
+    // Initialize gallery
+    initializeGallery();
+    
     // Generate button click handler
     if (generateBtn) {
         generateBtn.addEventListener('click', async () => {
@@ -351,12 +354,58 @@ document.addEventListener('DOMContentLoaded', () => {
             const limitedHistory = history.slice(0, 10);
             localStorage.setItem('facepainting-history', JSON.stringify(limitedHistory));
             
-            // If Gallery section exists, update display
-            updateGallery();
+            // No longer update Gallery with history items
+            // Gallery now displays featured designs only
             
         } catch (error) {
             console.error('Failed to save history:', error);
         }
+    }
+    
+    // Initialize Gallery with filter functionality
+    function initializeGallery() {
+        // Update Gallery with featured designs
+        updateGallery();
+        
+        // Add filter functionality
+        const filterButtons = document.querySelectorAll('.filter__btn');
+        if (filterButtons.length > 0) {
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Remove active class from all buttons
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    
+                    // Add active class to clicked button
+                    button.classList.add('active');
+                    
+                    // Get filter value
+                    const filterValue = button.dataset.filter;
+                    
+                    // Filter gallery items
+                    filterGalleryItems(filterValue);
+                });
+            });
+        }
+    }
+    
+    // Filter gallery items based on category
+    function filterGalleryItems(filter) {
+        const galleryItems = document.querySelectorAll('.gallery__item');
+        
+        if (galleryItems.length === 0) return;
+        
+        galleryItems.forEach(item => {
+            if (filter === 'all') {
+                item.style.display = 'block';
+            } else {
+                const itemCategory = item.dataset.category;
+                if (itemCategory && itemCategory.includes(filter)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            }
+        });
     }
     
     // Update Gallery display
@@ -364,37 +413,76 @@ document.addEventListener('DOMContentLoaded', () => {
         const galleryGrid = document.getElementById('gallery-grid');
         if (!galleryGrid) return;
         
-        try {
-            const history = JSON.parse(localStorage.getItem('facepainting-history') || '[]');
-            
-            // Clear existing content
-            galleryGrid.innerHTML = '';
-            
-            // If history exists, add to Gallery
-            if (history.length > 0) {
-                history.forEach(item => {
-                    const galleryItem = document.createElement('div');
-                    galleryItem.className = 'gallery__item';
-                    
-                    galleryItem.innerHTML = `
-                        <div class="gallery__image-container">
-                            <img src="${item.imageUrl}" alt="${item.description}" class="gallery__image">
-                        </div>
-                        <div class="gallery__details">
-                            <p class="gallery__description">${item.description}</p>
-                            <div class="gallery__tags">
-                                ${item.style ? `<span class="gallery__tag">${item.style}</span>` : ''}
-                                ${item.complexity ? `<span class="gallery__tag">${item.complexity}</span>` : ''}
-                            </div>
-                        </div>
-                    `;
-                    
-                    galleryGrid.appendChild(galleryItem);
-                });
+        // Clear existing content
+        galleryGrid.innerHTML = '';
+        
+        // Display featured face paint designs instead of user history
+        const featuredDesigns = [
+            {
+                imageUrl: 'assets/images/gallery/featured-1.jpg',
+                description: 'Mystical Butterfly Fantasy',
+                style: 'Fantasy Characters',
+                complexity: 'Professional',
+                category: 'fantasy'
+            },
+            {
+                imageUrl: 'assets/images/gallery/featured-2.jpg',
+                description: 'Vibrant Festival Glitter Art',
+                style: 'Glitter & Sparkle',
+                complexity: 'Advanced',
+                category: 'festival'
+            },
+            {
+                imageUrl: 'assets/images/gallery/featured-3.jpg',
+                description: 'Elegant Floral Vine Design',
+                style: 'Floral & Nature',
+                complexity: 'Intermediate',
+                category: 'fantasy'
+            },
+            {
+                imageUrl: 'assets/images/gallery/featured-4.jpg',
+                description: 'Tiger-inspired Tribal Pattern',
+                style: 'Animal Designs',
+                complexity: 'Professional',
+                category: 'animal'
+            },
+            {
+                imageUrl: 'assets/images/gallery/featured-5.jpg',
+                description: 'Celestial Cosmic Night Sky',
+                style: 'Abstract Art',
+                complexity: 'Advanced',
+                category: 'abstract'
+            },
+            {
+                imageUrl: 'assets/images/gallery/featured-6.jpg',
+                description: 'Superhero Inspired Mask',
+                style: 'Superhero Looks',
+                complexity: 'Intermediate',
+                category: 'fantasy'
             }
-        } catch (error) {
-            console.error('Failed to update Gallery:', error);
-        }
+        ];
+        
+        // Add featured designs to Gallery
+        featuredDesigns.forEach(item => {
+            const galleryItem = document.createElement('div');
+            galleryItem.className = 'gallery__item';
+            galleryItem.dataset.category = item.category || '';
+            
+            galleryItem.innerHTML = `
+                <div class="gallery__image-container">
+                    <img src="${item.imageUrl}" alt="${item.description}" class="gallery__image">
+                </div>
+                <div class="gallery__details">
+                    <p class="gallery__description">${item.description}</p>
+                    <div class="gallery__tags">
+                        ${item.style ? `<span class="gallery__tag">${item.style}</span>` : ''}
+                        ${item.complexity ? `<span class="gallery__tag">${item.complexity}</span>` : ''}
+                    </div>
+                </div>
+            `;
+            
+            galleryGrid.appendChild(galleryItem);
+        });
     }
     
     // Initialize custom options section
@@ -618,7 +706,4 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-    
-    // Update Gallery on initial load
-    updateGallery();
 });
