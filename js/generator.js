@@ -240,42 +240,47 @@ document.addEventListener('DOMContentLoaded', () => {
                         break;
                     case 'succeeded':
                         updateLoadingState('refining', 100);
-                    clearInterval(pollInterval);
-                    
+                        clearInterval(pollInterval);
+                        
                         // Get generated image URL
-                    const imageUrl = data.output && data.output[0];
-                    
-                    if (imageUrl && resultImage) {
+                        const imageUrl = data.output && data.output[0];
+                        
+                        if (imageUrl && resultImage) {
                             // Preload image
                             const img = new Image();
                             img.onload = function() {
-                        resultImage.src = imageUrl;
+                                resultImage.src = imageUrl;
                                 resultImage.alt = 'Generated face paint design';
-                        
+                                
                                 // Show result with fade-in effect
-                        if (previewLoading) previewLoading.classList.add('hidden');
+                                if (previewLoading) previewLoading.classList.add('hidden');
                                 if (previewResult) {
                                     previewResult.classList.remove('hidden');
                                     previewResult.classList.add('fade-in');
                                 }
-                        
+                                
                                 // Save to history
-                        saveToHistory({
-                            description: promptInput ? promptInput.value : '',
-                            category: categorySelect ? categorySelect.value : '',
-                            style: styleSelect ? styleSelect.value : '',
-                            complexity: complexitySelect ? complexitySelect.value : '',
-                            imageUrl
-                        });
+                                saveToHistory({
+                                    description: promptInput ? promptInput.value : '',
+                                    category: categorySelect ? categorySelect.value : '',
+                                    style: styleSelect ? styleSelect.value : '',
+                                    complexity: complexitySelect ? complexitySelect.value : '',
+                                    imageUrl
+                                });
+                                
+                                // Add social sharing buttons - directly call the function here
+                                setTimeout(() => {
+                                    addSocialSharing();
+                                }, 300);
                             };
                             img.src = imageUrl;
-                    } else {
+                        } else {
                             throw new Error('Unable to get generated image');
-                    }
+                        }
                         break;
                     
                     case 'failed':
-                    clearInterval(pollInterval);
+                        clearInterval(pollInterval);
                         throw new Error(data.error || 'Generation failed');
                 }
                 
@@ -608,28 +613,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-    
-    // Add social sharing buttons when an image is successfully generated
-    const originalPollPredictionStatus = pollPredictionStatus;
-    // Override to add social sharing buttons
-    window.pollPredictionStatus = function(id) {
-        originalPollPredictionStatus(id);
-        
-        // We'll add a custom hook to add social sharing after the image is loaded
-        const originalOnload = Image.prototype.onload;
-        Image.prototype.onload = function() {
-            if (originalOnload) originalOnload.call(this);
-            
-            // Remove any existing social share container
-            const existingShare = document.querySelector('.social-share');
-            if (existingShare) existingShare.remove();
-            
-            // Add social sharing
-            setTimeout(() => {
-                addSocialSharing();
-            }, 100);
-        };
-    };
     
     // Update Gallery on initial load
     updateGallery();
