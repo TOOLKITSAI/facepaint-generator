@@ -1466,18 +1466,23 @@ h4 {
     right: 0;
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.7);
-    z-index: 1000;
+    z-index: 9999; /* Ensure it's on top of everything */
     display: flex;
     align-items: center;
     justify-content: center;
+    animation: fadeIn 0.3s ease-in-out; /* Add fade-in animation */
 }
 
 .guidance-content {
     background-color: white;
     max-width: 500px;
+    width: 90%; /* Limit width on mobile devices */
     padding: 24px;
     border-radius: 8px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    position: relative; /* Add relative positioning */
+    max-height: 90vh; /* Limit maximum height */
+    overflow-y: auto; /* Allow content to scroll if needed */
 }
 
 .guidance-content h3 {
@@ -1496,4 +1501,6 @@ h4 {
 
 .guidance-content .btn {
     margin-top: 16px;
+    display: block;
+    width: 100%;
 } 

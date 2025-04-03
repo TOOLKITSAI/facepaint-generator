@@ -1,4 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Add a short delay to ensure the page is fully loaded before showing guidance
+    setTimeout(() => {
+        showGuidance();
+    }, 500);
+    
     // Get DOM elements
     const generateBtn = document.querySelector('.btn--generate');
     const promptInput = document.getElementById('prompt');
@@ -14,9 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const regenerateBtn = document.querySelector('.preview-result__actions .btn:first-child');
     const saveBtn = document.querySelector('.preview-result__actions .btn:last-child');
-    
-    // Show user guidance on first visit
-    showGuidance();
     
     // Generate button click handler
     if (generateBtn) {
@@ -264,7 +266,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function showGuidance() {
         // Only show for first-time visits
         if (!localStorage.getItem('facepaint-guidance-shown')) {
-            
             const guidancePopup = document.createElement('div');
             guidancePopup.className = 'guidance-popup';
             guidancePopup.innerHTML = `
@@ -281,7 +282,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
             
-            document.body.appendChild(guidancePopup);
+            // Insert at the beginning of body to ensure it's above other content
+            if (document.body.firstChild) {
+                document.body.insertBefore(guidancePopup, document.body.firstChild);
+            } else {
+                document.body.appendChild(guidancePopup);
+            }
             
             document.getElementById('got-it').addEventListener('click', () => {
                 guidancePopup.remove();
