@@ -4,6 +4,10 @@ document.addEventListener('DOMContentLoaded', () => {
         showGuidance();
     }, 500);
     
+    // Global variables for pagination
+    let currentPage = 1;
+    const itemsPerPage = 6;
+    
     // Get DOM elements
     const generateBtn = document.querySelector('.btn--generate');
     const promptInput = document.getElementById('prompt');
@@ -243,33 +247,33 @@ document.addEventListener('DOMContentLoaded', () => {
                         break;
                     case 'succeeded':
                         updateLoadingState('refining', 100);
-                        clearInterval(pollInterval);
-                        
+                    clearInterval(pollInterval);
+                    
                         // Get generated image URL
-                        const imageUrl = data.output && data.output[0];
-                        
-                        if (imageUrl && resultImage) {
+                    const imageUrl = data.output && data.output[0];
+                    
+                    if (imageUrl && resultImage) {
                             // Preload image
                             const img = new Image();
                             img.onload = function() {
-                                resultImage.src = imageUrl;
+                        resultImage.src = imageUrl;
                                 resultImage.alt = 'Generated face paint design';
-                                
+                        
                                 // Show result with fade-in effect
-                                if (previewLoading) previewLoading.classList.add('hidden');
+                        if (previewLoading) previewLoading.classList.add('hidden');
                                 if (previewResult) {
                                     previewResult.classList.remove('hidden');
                                     previewResult.classList.add('fade-in');
                                 }
-                                
+                        
                                 // Save to history
-                                saveToHistory({
-                                    description: promptInput ? promptInput.value : '',
-                                    category: categorySelect ? categorySelect.value : '',
-                                    style: styleSelect ? styleSelect.value : '',
-                                    complexity: complexitySelect ? complexitySelect.value : '',
-                                    imageUrl
-                                });
+                        saveToHistory({
+                            description: promptInput ? promptInput.value : '',
+                            category: categorySelect ? categorySelect.value : '',
+                            style: styleSelect ? styleSelect.value : '',
+                            complexity: complexitySelect ? complexitySelect.value : '',
+                            imageUrl
+                        });
                                 
                                 // Add social sharing buttons - directly call the function here
                                 setTimeout(() => {
@@ -277,13 +281,13 @@ document.addEventListener('DOMContentLoaded', () => {
                                 }, 300);
                             };
                             img.src = imageUrl;
-                        } else {
+                    } else {
                             throw new Error('Unable to get generated image');
-                        }
+                    }
                         break;
                     
                     case 'failed':
-                        clearInterval(pollInterval);
+                    clearInterval(pollInterval);
                         throw new Error(data.error || 'Generation failed');
                 }
                 
@@ -404,10 +408,6 @@ document.addEventListener('DOMContentLoaded', () => {
         updateLoadMoreButtonVisibility();
     }
     
-    // Global variables for pagination
-    let currentPage = 1;
-    const itemsPerPage = 6;
-    
     // Update load more button visibility
     function updateLoadMoreButtonVisibility() {
         const loadMoreBtn = document.getElementById('load-more-btn');
@@ -457,23 +457,23 @@ document.addEventListener('DOMContentLoaded', () => {
     // Add designs to gallery helper function
     function addDesignsToGallery(designs, container) {
         designs.forEach(item => {
-            const galleryItem = document.createElement('div');
-            galleryItem.className = 'gallery__item';
+                    const galleryItem = document.createElement('div');
+                    galleryItem.className = 'gallery__item';
             galleryItem.dataset.category = item.category || '';
-            
-            galleryItem.innerHTML = `
-                <div class="gallery__image-container">
-                    <img src="${item.imageUrl}" alt="${item.description}" class="gallery__image">
-                </div>
-                <div class="gallery__details">
-                    <p class="gallery__description">${item.description}</p>
-                    <div class="gallery__tags">
-                        ${item.style ? `<span class="gallery__tag">${item.style}</span>` : ''}
-                        ${item.complexity ? `<span class="gallery__tag">${item.complexity}</span>` : ''}
-                    </div>
-                </div>
-            `;
-            
+                    
+                    galleryItem.innerHTML = `
+                        <div class="gallery__image-container">
+                            <img src="${item.imageUrl}" alt="${item.description}" class="gallery__image">
+                        </div>
+                        <div class="gallery__details">
+                            <p class="gallery__description">${item.description}</p>
+                            <div class="gallery__tags">
+                                ${item.style ? `<span class="gallery__tag">${item.style}</span>` : ''}
+                                ${item.complexity ? `<span class="gallery__tag">${item.complexity}</span>` : ''}
+                            </div>
+                        </div>
+                    `;
+                    
             container.appendChild(galleryItem);
         });
     }
