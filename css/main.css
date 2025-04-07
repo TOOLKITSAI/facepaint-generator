@@ -32,6 +32,7 @@
 .nav__logo-icon {
     width: 32px;
     height: 32px;
+    fill: var(--color-accent);
 }
 
 .nav__logo-text {
@@ -204,14 +205,16 @@ h4 {
     height: 100%;
     border-radius: var(--radius-lg);
     overflow: hidden;
-    background-color: rgba(255, 255, 255, 0.05); /* Added subtle background for placeholder */
+    background-color: rgba(255, 255, 255, 0.05);
 }
 
 .hero__image {
+    position: relative;
     width: 100%;
     height: 100%;
     object-fit: cover;
     transition: transform var(--transition-normal);
+    z-index: 2;
 }
 
 .hero__image-wrapper:hover .hero__image {
@@ -231,6 +234,7 @@ h4 {
     justify-content: center;
     color: var(--color-text-secondary);
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 182, 39, 0.1));
+    z-index: 1;
 }
 
 .hero__placeholder-icon {
@@ -1608,6 +1612,7 @@ h4 {
 .footer__logo-icon {
     width: 28px;
     height: 28px;
+    fill: var(--color-accent);
 }
 
 .footer__logo-text {
