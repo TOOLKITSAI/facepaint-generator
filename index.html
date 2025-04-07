@@ -7,7 +7,7 @@
     <meta name="keywords" content="face paint ideas, face painting designs, AI face paint generator">
     
     <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="assets/icons/palette.svg">
+    <link rel="icon" type="image/svg+xml" href="assets/icons/mask.svg">
     
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Comforter+Brush&display=swap" rel="stylesheet">
@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="css/main.css">
     
     <!-- Preload Critical Images -->
-    <link rel="preload" href="assets/images/hero-face-paint.jpg" as="image">
+    <link rel="preload" href="assets/images/hero-face-paint.jpg" as="image" fetchpriority="high">
     <link rel="preload" href="assets/images/features-highlight.jpg" as="image">
     
     <title>Face Paint Ideas - AI Face Painting Design Generator</title>
@@ -54,7 +54,7 @@
                 </div>
                 <div class="hero__visual">
                     <div class="hero__image-wrapper">
-                        <img src="assets/images/hero-face-paint.jpg" alt="Creative face paint design" class="hero__image">
+                        <img src="assets/images/hero-face-paint.jpg" alt="Creative face paint design" class="hero__image" loading="eager" decoding="sync">
                         
                         <!-- Placeholder will show if image is not available -->
                         <div class="hero__placeholder" style="display: none;">
@@ -523,7 +523,7 @@
             <div class="footer__main">
                 <div class="footer__brand">
                     <a href="/" class="footer__logo">
-                        <img src="assets/icons/palette.svg" alt="Face Paint Ideas Logo" class="footer__logo-icon">
+                        <img src="assets/icons/mask.svg" alt="Face Paint Ideas Logo" class="footer__logo-icon">
                         <span class="footer__logo-text">Face Paint Ideas</span>
                     </a>
                     <p class="footer__description">Your AI-powered companion for creative and inspiring face paint designs for every occasion and skill level.</p>
