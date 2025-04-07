@@ -7,7 +7,7 @@
     <meta name="keywords" content="face paint ideas, face painting designs, AI face paint generator">
     
     <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="assets/icons/theater.svg">
+    <link rel="icon" type="image/png" href="assets/icons/arts-mask.png">
     
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Comforter+Brush&display=swap" rel="stylesheet">
@@ -28,7 +28,7 @@
     <header class="header">
         <nav class="nav container">
             <a href="/" class="nav__logo">
-                <img src="assets/icons/theater.svg" alt="Face Paint Ideas Logo" class="nav__logo-icon">
+                <img src="assets/icons/arts-mask.png" alt="Face Paint Ideas Logo" class="nav__logo-icon">
                 <span class="nav__logo-text">Face Paint Ideas</span>
             </a>
             <ul class="nav__menu">
@@ -54,10 +54,19 @@
                 </div>
                 <div class="hero__visual">
                     <div class="hero__image-wrapper">
-                        <img src="assets/images/hero-face-paint.jpg" alt="Creative face paint design" class="hero__image" loading="eager" decoding="sync">
+                        <img 
+                            src="assets/images/hero-face-paint.jpg" 
+                            alt="Creative face paint design" 
+                            class="hero__image" 
+                            loading="eager" 
+                            decoding="sync"
+                            fetchpriority="high"
+                            onload="this.style.display='block'; document.querySelector('.hero__placeholder').style.display='none';"
+                            onerror="this.style.display='none'; document.querySelector('.hero__placeholder').style.display='flex';"
+                        >
                         
                         <!-- Placeholder will show if image is not available -->
-                        <div class="hero__placeholder" style="display: none;">
+                        <div class="hero__placeholder" style="display: flex;">
                             <div class="hero__placeholder-icon">🎭</div>
                             <p class="hero__placeholder-text">Creative face paint designs to inspire your next masterpiece</p>
                         </div>
@@ -523,7 +532,7 @@
             <div class="footer__main">
                 <div class="footer__brand">
                     <a href="/" class="footer__logo">
-                        <img src="assets/icons/theater.svg" alt="Face Paint Ideas Logo" class="footer__logo-icon">
+                        <img src="assets/icons/arts-mask.png" alt="Face Paint Ideas Logo" class="footer__logo-icon">
                         <span class="footer__logo-text">Face Paint Ideas</span>
                     </a>
                     <p class="footer__description">Your AI-powered companion for creative and inspiring face paint designs for every occasion and skill level.</p>
