@@ -1760,74 +1760,15 @@ h4 {
     to { opacity: 1; }
 }
 
-/* User guidance popup */
-.guidance-popup {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.8);
-    z-index: 9999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    animation: fadeIn 0.3s ease-in-out;
-}
-
-.guidance-content {
-    background-color: #2F2F2F;
-    max-width: 500px;
-    width: 90%;
-    padding: 24px;
-    border-radius: 8px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-    position: relative;
-    max-height: 90vh;
-    overflow-y: auto;
-}
-
-.guidance-content h3 {
-    color: #FFFFFF;
-    margin-top: 0;
-    margin-bottom: 16px;
-    font-size: 1.5rem;
-}
-
-.guidance-content p {
-    color: #FFFFFF;
-    margin-bottom: 16px;
-    line-height: 1.5;
-}
-
-.guidance-content ul {
-    padding-left: 20px;
-    margin-bottom: 20px;
-}
-
-.guidance-content li {
-    margin-bottom: 8px;
-    line-height: 1.5;
-    color: rgba(255, 255, 255, 0.8);
-}
-
+/* Remove popup styles */
+.guidance-popup,
+.guidance-content,
+.guidance-content h3,
+.guidance-content p,
+.guidance-content ul,
+.guidance-content li,
 .guidance-content .btn {
-    margin-top: 16px;
-    display: block;
-    width: 100%;
-    background-color: var(--color-accent);
-    color: var(--color-background);
-    border: none;
-    padding: 12px;
-    border-radius: 6px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.guidance-content .btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(255, 182, 39, 0.3);
+    display: none !important;
 }
 
 /* Social sharing buttons */

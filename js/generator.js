@@ -93,10 +93,11 @@ const allFeaturedDesigns = [
     // More can be added as needed
 ];
 
+// Initialize the generator
 document.addEventListener('DOMContentLoaded', () => {
     // Modify the timeout to ensure proper loading of all elements before showing the guidance
     setTimeout(() => {
-        showGuidance();
+        // showGuidance();
     }, 500);
     
     // Get DOM elements
@@ -389,38 +390,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 handleGenerationError(error);
             }
         }, 3000); // Check every 3 seconds
-    }
-    
-    // Show guidance popup for first-time users
-    function showGuidance() {
-        // Only show for first-time visits
-        if (!localStorage.getItem('facepaint-guidance-shown')) {
-            // Create a container that will be positioned fixed
-            const guidancePopup = document.createElement('div');
-            guidancePopup.className = 'guidance-popup';
-            
-            guidancePopup.innerHTML = `
-                <div class="guidance-content">
-                    <h3>Welcome to Face Paint Generator</h3>
-                    <p>👋 Here are some tips for best results:</p>
-                    <ul>
-                        <li>Describe your desired face paint design in detail (e.g., "Sunflower pattern children's face paint")</li>
-                        <li>Choose appropriate category and style for more targeted results</li>
-                        <li>Generation takes about 30-60 seconds, please be patient</li>
-                        <li>You can save designs and view them in your history</li>
-                    </ul>
-                    <button class="btn btn--primary" id="got-it">Got it!</button>
-                </div>
-            `;
-            
-            // Directly append to body to avoid any DOM positioning issues
-            document.body.appendChild(guidancePopup);
-            
-            document.getElementById('got-it').addEventListener('click', () => {
-                guidancePopup.remove();
-                localStorage.setItem('facepaint-guidance-shown', 'true');
-            });
-        }
     }
     
     // Save to history

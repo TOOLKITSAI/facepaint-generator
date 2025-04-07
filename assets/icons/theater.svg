@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- 左边面具（喜剧） -->
+    <path d="M160 120C120 120 80 160 80 200C80 280 160 320 160 320C160 320 240 280 240 200C240 160 200 120 160 120Z" fill="#FFB627"/>
+    <path d="M120 180C120 160 140 160 160 160C180 160 200 160 200 180C200 200 180 220 160 220C140 220 120 200 120 180Z" fill="#2F2F2F"/>
+    <path d="M120 240C140 260 180 260 200 240" stroke="#2F2F2F" stroke-width="16" stroke-linecap="round"/>
+    
+    <!-- 右边面具（悲剧） -->
+    <path d="M352 120C312 120 272 160 272 200C272 280 352 320 352 320C352 320 432 280 432 200C432 160 392 120 352 120Z" fill="#FFB627"/>
+    <path d="M312 180C312 160 332 160 352 160C372 160 392 160 392 180C392 200 372 220 352 220C332 220 312 200 312 180Z" fill="#2F2F2F"/>
+    <path d="M312 260C332 240 372 240 392 260" stroke="#2F2F2F" stroke-width="16" stroke-linecap="round"/>
+    
+    <!-- 连接装饰 -->
+    <rect x="240" y="200" width="32" height="80" fill="#FFB627"/>
+    
+    <!-- 装饰图案 -->
+    <circle cx="160" cy="160" r="8" fill="#2F2F2F" fill-opacity="0.2"/>
+    <circle cx="352" cy="160" r="8" fill="#2F2F2F" fill-opacity="0.2"/>
+</svg> 
