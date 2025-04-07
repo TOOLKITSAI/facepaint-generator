@@ -1793,6 +1793,11 @@ h4 {
     margin-top: 0;
 }
 
+.guidance-content p {
+    color: var(--color-text);
+    margin-bottom: 16px;
+}
+
 .guidance-content ul {
     padding-left: 20px;
 }

@@ -17,6 +17,10 @@
     <link rel="stylesheet" href="css/variables.css">
     <link rel="stylesheet" href="css/main.css">
     
+    <!-- Preload Critical Images -->
+    <link rel="preload" href="assets/images/hero-face-paint2.jpg" as="image">
+    <link rel="preload" href="assets/images/features-highlight.jpg" as="image">
+    
     <title>Face Paint Ideas - AI Face Painting Design Generator</title>
 </head>
 <body>
@@ -50,7 +54,7 @@
                 </div>
                 <div class="hero__visual">
                     <div class="hero__image-wrapper">
-                        <img src="assets/images/hero-face-paint.jpg" alt="Creative face paint design" class="hero__image">
+                        <img src="assets/images/hero-face-paint2.jpg" alt="Creative face paint design" class="hero__image">
                         
                         <!-- Placeholder will show if image is not available -->
                         <div class="hero__placeholder" style="display: none;">
@@ -557,6 +561,43 @@
 
     <!-- JavaScript -->
     <script>
+        // 图片加载错误处理
+        document.addEventListener('DOMContentLoaded', function() {
+            // 处理Hero图片加载
+            const heroImage = document.querySelector('.hero__image');
+            const heroPlaceholder = document.querySelector('.hero__placeholder');
+            
+            if (heroImage && heroPlaceholder) {
+                heroImage.addEventListener('error', function() {
+                    heroImage.style.display = 'none';
+                    heroPlaceholder.style.display = 'flex';
+                });
+                
+                // 检查图片是否已加载
+                if (heroImage.complete && heroImage.naturalHeight === 0) {
+                    heroImage.style.display = 'none';
+                    heroPlaceholder.style.display = 'flex';
+                }
+            }
+            
+            // 处理Features图片加载
+            const featuresImage = document.querySelector('.highlight__image');
+            const featuresPlaceholder = document.querySelector('.highlight__placeholder');
+            
+            if (featuresImage && featuresPlaceholder) {
+                featuresImage.addEventListener('error', function() {
+                    featuresImage.style.display = 'none';
+                    featuresPlaceholder.style.display = 'flex';
+                });
+                
+                // 检查图片是否已加载
+                if (featuresImage.complete && featuresImage.naturalHeight === 0) {
+                    featuresImage.style.display = 'none';
+                    featuresPlaceholder.style.display = 'flex';
+                }
+            }
+        });
+    
         // FAQ Accordion Functionality
         document.addEventListener('DOMContentLoaded', function() {
             const faqItems = document.querySelectorAll('.faq__item');

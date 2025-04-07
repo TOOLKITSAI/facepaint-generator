@@ -399,17 +399,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const guidancePopup = document.createElement('div');
             guidancePopup.className = 'guidance-popup';
             
-            // Set inline styles to ensure proper positioning
-            guidancePopup.style.position = 'fixed';
-            guidancePopup.style.top = '0';
-            guidancePopup.style.left = '0';
-            guidancePopup.style.right = '0';
-            guidancePopup.style.bottom = '0';
-            guidancePopup.style.zIndex = '10000';
-            guidancePopup.style.display = 'flex';
-            guidancePopup.style.alignItems = 'center';
-            guidancePopup.style.justifyContent = 'center';
-            
             guidancePopup.innerHTML = `
                 <div class="guidance-content">
                     <h3>Welcome to Face Paint Generator</h3>
