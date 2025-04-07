@@ -1776,7 +1776,7 @@ h4 {
 }
 
 .guidance-content {
-    background-color: white;
+    background-color: var(--color-surface);
     max-width: 500px;
     width: 90%; /* Limit width on mobile devices */
     padding: 24px;
@@ -1785,10 +1785,11 @@ h4 {
     position: relative; /* Add relative positioning */
     max-height: 90vh; /* Limit maximum height */
     overflow-y: auto; /* Allow content to scroll if needed */
+    color: var(--color-text); /* 使用主文本颜色 */
 }
 
 .guidance-content h3 {
-    color: #333;
+    color: var(--color-text);
     margin-top: 0;
 }
 
@@ -1799,6 +1800,7 @@ h4 {
 .guidance-content li {
     margin-bottom: 8px;
     line-height: 1.5;
+    color: var(--color-text-secondary); /* 给列表项使用次要文本颜色 */
 }
 
 .guidance-content .btn {
