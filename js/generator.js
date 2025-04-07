@@ -6,42 +6,42 @@ const itemsPerPage = 6;
 const allFeaturedDesigns = [
     // Initial 6 designs
     {
-        imageUrl: 'assets/images/gallery/featured-1.jpg',
+        imageUrl: 'assets/images/gallery/featured-1.jpeg',
         description: 'Mystical Butterfly Fantasy',
         style: 'Fantasy Characters',
         complexity: 'Professional',
         category: 'fantasy'
     },
     {
-        imageUrl: 'assets/images/gallery/featured-2.jpg',
+        imageUrl: 'assets/images/gallery/featured-2.jpeg',
         description: 'Vibrant Festival Glitter Art',
         style: 'Glitter & Sparkle',
         complexity: 'Advanced',
         category: 'festival'
     },
     {
-        imageUrl: 'assets/images/gallery/featured-3.jpg',
+        imageUrl: 'assets/images/gallery/featured-3.png',
         description: 'Elegant Floral Vine Design',
         style: 'Floral & Nature',
         complexity: 'Intermediate',
         category: 'fantasy'
     },
     {
-        imageUrl: 'assets/images/gallery/featured-4.jpg',
+        imageUrl: 'assets/images/gallery/featured-4.png',
         description: 'Tiger-inspired Tribal Pattern',
         style: 'Animal Designs',
         complexity: 'Professional',
         category: 'animal'
     },
     {
-        imageUrl: 'assets/images/gallery/featured-5.jpg',
+        imageUrl: 'assets/images/gallery/featured-5.png',
         description: 'Celestial Cosmic Night Sky',
         style: 'Abstract Art',
         complexity: 'Advanced',
         category: 'abstract'
     },
     {
-        imageUrl: 'assets/images/gallery/featured-6.jpg',
+        imageUrl: 'assets/images/gallery/featured-6.jpeg',
         description: 'Superhero Inspired Mask',
         style: 'Superhero Looks',
         complexity: 'Intermediate',
@@ -49,42 +49,42 @@ const allFeaturedDesigns = [
     },
     // Additional designs (will be loaded with "Load More")
     {
-        imageUrl: 'assets/images/gallery/featured-7.jpg',
+        imageUrl: 'assets/images/gallery/featured-7.png',
         description: 'Sparkling Mermaid Scales',
         style: 'Fantasy Characters',
         complexity: 'Advanced',
         category: 'fantasy'
     },
     {
-        imageUrl: 'assets/images/gallery/featured-8.jpg',
+        imageUrl: 'assets/images/gallery/featured-8.png',
         description: 'Geometric Neon Patterns',
         style: 'Abstract Art',
         complexity: 'Professional',
         category: 'abstract'
     },
     {
-        imageUrl: 'assets/images/gallery/featured-9.jpg',
+        imageUrl: 'assets/images/gallery/featured-9.png',
         description: 'Vibrant Peacock Feathers',
         style: 'Animal Designs',
         complexity: 'Intermediate',
         category: 'animal'
     },
     {
-        imageUrl: 'assets/images/gallery/featured-10.jpg',
+        imageUrl: 'assets/images/gallery/featured-10.png',
         description: 'Carnival Rainbow Explosion',
         style: 'Festival Designs',
         complexity: 'Professional',
         category: 'festival'
     },
     {
-        imageUrl: 'assets/images/gallery/featured-11.jpg',
+        imageUrl: 'assets/images/gallery/featured-11.png',
         description: 'Enchanted Forest Fairy',
         style: 'Fantasy Characters',
         complexity: 'Advanced',
         category: 'fantasy'
     },
     {
-        imageUrl: 'assets/images/gallery/featured-12.jpg',
+        imageUrl: 'assets/images/gallery/featured-12.png',
         description: 'Tribal War Paint',
         style: 'Tribal & Ethnic',
         complexity: 'Intermediate',
