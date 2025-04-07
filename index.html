@@ -568,15 +568,31 @@
             const heroPlaceholder = document.querySelector('.hero__placeholder');
             
             if (heroImage && heroPlaceholder) {
-                heroImage.addEventListener('error', function() {
+                // 设置图片加载错误处理
+                heroImage.onerror = function() {
+                    console.error('Hero image failed to load');
                     heroImage.style.display = 'none';
                     heroPlaceholder.style.display = 'flex';
-                });
+                };
+                
+                // 设置图片加载成功处理
+                heroImage.onload = function() {
+                    console.log('Hero image loaded successfully');
+                    heroImage.style.display = 'block';
+                    heroPlaceholder.style.display = 'none';
+                };
                 
                 // 检查图片是否已加载
-                if (heroImage.complete && heroImage.naturalHeight === 0) {
-                    heroImage.style.display = 'none';
-                    heroPlaceholder.style.display = 'flex';
+                if (heroImage.complete) {
+                    if (heroImage.naturalHeight === 0) {
+                        console.error('Hero image has zero height');
+                        heroImage.style.display = 'none';
+                        heroPlaceholder.style.display = 'flex';
+                    } else {
+                        console.log('Hero image already loaded');
+                        heroImage.style.display = 'block';
+                        heroPlaceholder.style.display = 'none';
+                    }
                 }
             }
             
