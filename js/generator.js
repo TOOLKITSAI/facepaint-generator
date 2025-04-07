@@ -506,25 +506,82 @@ document.addEventListener('DOMContentLoaded', () => {
     // Add designs to gallery helper function
     function addDesignsToGallery(designs, container) {
         designs.forEach(item => {
-                    const galleryItem = document.createElement('div');
-                    galleryItem.className = 'gallery__item';
+            const galleryItem = document.createElement('div');
+            galleryItem.className = 'gallery__item';
             galleryItem.dataset.category = item.category || '';
-                    
-                    galleryItem.innerHTML = `
-                        <div class="gallery__image-container">
-                            <img src="${item.imageUrl}" alt="${item.description}" class="gallery__image">
-                        </div>
-                        <div class="gallery__details">
-                            <p class="gallery__description">${item.description}</p>
-                            <div class="gallery__tags">
-                                ${item.style ? `<span class="gallery__tag">${item.style}</span>` : ''}
-                                ${item.complexity ? `<span class="gallery__tag">${item.complexity}</span>` : ''}
-                            </div>
-                        </div>
-                    `;
-                    
+            
+            galleryItem.innerHTML = `
+                <div class="gallery__image-container">
+                    <img src="${item.imageUrl}" alt="${item.description}" class="gallery__image">
+                </div>
+                <div class="gallery__details">
+                    <p class="gallery__description">${item.description}</p>
+                    <div class="gallery__tags">
+                        ${item.style ? `<span class="gallery__tag">${item.style}</span>` : ''}
+                        ${item.complexity ? `<span class="gallery__tag">${item.complexity}</span>` : ''}
+                    </div>
+                </div>
+            `;
+            
+            // Add click event to open modal
+            galleryItem.addEventListener('click', () => openDesignModal(item));
+            
             container.appendChild(galleryItem);
         });
+    }
+    
+    // Function to open design modal
+    function openDesignModal(item) {
+        // Create modal if it doesn't exist
+        let modal = document.querySelector('.gallery__modal');
+        if (!modal) {
+            modal = document.createElement('div');
+            modal.className = 'gallery__modal';
+            modal.innerHTML = `
+                <div class="gallery__modal-content">
+                    <button class="gallery__modal-close">&times;</button>
+                    <img src="" alt="" class="gallery__modal-image">
+                    <div class="gallery__modal-details">
+                        <div class="gallery__modal-description"></div>
+                        <div class="gallery__modal-meta"></div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            
+            // Add close event
+            const closeBtn = modal.querySelector('.gallery__modal-close');
+            closeBtn.addEventListener('click', () => {
+                modal.classList.remove('active');
+            });
+            
+            // Close modal when clicking outside
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                }
+            });
+        }
+        
+        // Update modal content
+        const modalImage = modal.querySelector('.gallery__modal-image');
+        const modalDescription = modal.querySelector('.gallery__modal-description');
+        const modalMeta = modal.querySelector('.gallery__modal-meta');
+        
+        if (modalImage) modalImage.src = item.imageUrl;
+        if (modalImage) modalImage.alt = item.description;
+        if (modalDescription) modalDescription.textContent = item.description;
+        
+        if (modalMeta) {
+            let metaHTML = '';
+            if (item.style) metaHTML += `<div><strong>Style:</strong> ${item.style}</div>`;
+            if (item.category) metaHTML += `<div><strong>Category:</strong> ${item.category}</div>`;
+            if (item.complexity) metaHTML += `<div><strong>Complexity:</strong> ${item.complexity}</div>`;
+            modalMeta.innerHTML = metaHTML;
+        }
+        
+        // Show modal
+        modal.classList.add('active');
     }
     
     // Update Gallery display with pagination
